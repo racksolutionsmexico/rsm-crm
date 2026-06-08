@@ -614,7 +614,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
           <option>Envío de propuesta</option><option>Reunión virtual</option><option>Otro</option>
         </select>
       </div>
-      <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="prosp-fseg"></div>
+      <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="prosp-fseg" min="2000-01-01" max="2099-12-31"></div>
       <div class="fg full"><label>Notas iniciales</label><textarea id="prosp-notas" placeholder="DESCRIPCIÓN DE LA NECESIDAD..." oninput="toUpper(this)"></textarea></div>
     </div>
   </div>
@@ -661,7 +661,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
           <option>Envío de propuesta</option><option>Reunión virtual</option><option>Otro</option>
         </select>
       </div>
-      <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="prs-fseg"></div>
+      <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="prs-fseg" min="2000-01-01" max="2099-12-31"></div>
       <div class="fg"><label>Vinculado a dictamen</label><select id="prs-dict"><option value="">Sin vínculo</option></select></div>
       <div class="fg full"><label>Notas iniciales</label><textarea id="prs-notas" placeholder="DESCRIPCIÓN DE LA NECESIDAD..." oninput="toUpper(this)"></textarea></div>
     </div>
@@ -717,15 +717,15 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
         <div class="fg"><label>Folio checklist Excel</label><input id="p-chk" placeholder="CHK-2026-008" oninput="toUpper(this)"></div>
 
         <div class="fg"><label>Cotización activa</label><input id="p-cotnum" placeholder="Auto" readonly style="background:var(--gray);color:var(--text3)" title="Se toma de la pestaña Cotizaciones"></div>
-        <div class="fg"><label>Fecha de aceptación</label><input type="date" id="p-facp" title="Para calcular días de cierre"></div>
-        <div class="fg"><label>Fecha INICIO inspección</label><input type="date" id="p-fins-i"></div>
-        <div class="fg"><label>Fecha FIN inspección</label><input type="date" id="p-fins-f"></div>
-        <div class="fg"><label>Fecha de entrega dictamen</label><input type="date" id="p-fent" onchange="calcVenc()"></div>
-        <div class="fg"><label>Fecha de vencimiento</label><input type="date" id="p-fvence" style="background:var(--gray)" title="Auto: N1=+6m N2/N3=+12m desde entrega">
+        <div class="fg"><label>Fecha de aceptación</label><input type="date" id="p-facp" title="Para calcular días de cierre" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha INICIO inspección</label><input type="date" id="p-fins-i" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha FIN inspección</label><input type="date" id="p-fins-f" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha de entrega dictamen</label><input type="date" id="p-fent" onchange="calcVenc()" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha de vencimiento</label><input type="date" id="p-fvence" style="background:var(--gray)" title="Auto: N1=+6m N2/N3=+12m desde entrega" min="2000-01-01" max="2099-12-31">
           <div style="font-size:10px;color:var(--text3);margin-top:2px">Auto calculado: N1 +6 meses · N2/N3 +12 meses</div>
         </div>
-        <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="p-fseg"></div>
-        <div class="fg"><label>Fecha inicio prospecto</label><input type="date" id="p-fcreado" title="Fecha en que empezó el proceso con este cliente"><div style="font-size:10px;color:var(--text3);margin-top:2px">Días de cierre = desde aquí hasta Fecha de aceptación</div></div>
+        <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="p-fseg" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha inicio prospecto</label><input type="date" id="p-fcreado" title="Fecha en que empezó el proceso con este cliente" min="2000-01-01" max="2099-12-31"><div style="font-size:10px;color:var(--text3);margin-top:2px">Días de cierre = desde aquí hasta Fecha de aceptación</div></div>
         <input type="hidden" id="p-fcerrado">
         <div class="fg full"><label>Descripción / Alcance</label><textarea id="p-desc" placeholder="DESCRIPCIÓN DEL PROYECTO, MÓDULOS, ALCANCE..." oninput="toUpper(this)"></textarea></div>
       </div>
@@ -825,7 +825,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
               <option>Envío de propuesta</option><option>Reunión virtual</option><option>Interno</option>
             </select>
           </div>
-          <div class="fg"><label>Fecha</label><input type="date" id="n-fecha"></div>
+          <div class="fg"><label>Fecha</label><input type="date" id="n-fecha" min="2000-01-01" max="2099-12-31"></div>
           <div class="fg full"><label>Nota</label><textarea id="n-texto" placeholder="DESCRIBE LA INTERACCIÓN O NOTA INTERNA..." oninput="toUpper(this)" style="min-height:56px"></textarea></div>
         </div>
         <button class="btn btn-p btn-sm" onclick="addNota()"><i class="ti ti-plus"></i>Agregar nota</button>
@@ -888,11 +888,11 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
         </div>
         <div class="fg"><label>Folio</label><input id="s-folio" placeholder="MT-NEM-RSM-2026-001" oninput="toUpper(this)"></div>
         <div class="fg"><label>Vinculado a dictamen</label><select id="s-dict"><option value="">Sin vínculo</option></select></div>
-        <div class="fg"><label>Fecha de aceptación</label><input type="date" id="s-facp"></div>
-        <div class="fg"><label>Fecha de inicio</label><input type="date" id="s-fini"></div>
-        <div class="fg"><label>Fecha fin / entrega</label><input type="date" id="s-ffin"></div>
-        <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="s-fseg"></div>
-        <div class="fg"><label>Fecha inicio prospecto</label><input type="date" id="s-fcreado"><div style="font-size:10px;color:var(--text3);margin-top:2px">Días de cierre = desde aquí hasta Fecha de aceptación</div></div>
+        <div class="fg"><label>Fecha de aceptación</label><input type="date" id="s-facp" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha de inicio</label><input type="date" id="s-fini" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha fin / entrega</label><input type="date" id="s-ffin" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha de seguimiento</label><input type="date" id="s-fseg" min="2000-01-01" max="2099-12-31"></div>
+        <div class="fg"><label>Fecha inicio prospecto</label><input type="date" id="s-fcreado" min="2000-01-01" max="2099-12-31"><div style="font-size:10px;color:var(--text3);margin-top:2px">Días de cierre = desde aquí hasta Fecha de aceptación</div></div>
         <input type="hidden" id="s-fcerrado">
         <div class="fg full"><label>Descripción</label><textarea id="s-desc" placeholder="DESCRIPCIÓN DEL SERVICIO..." oninput="toUpper(this)"></textarea></div>
       </div>
@@ -986,7 +986,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
               <option>Envío de propuesta</option><option>Reunión virtual</option><option>Interno</option>
             </select>
           </div>
-          <div class="fg"><label>Fecha</label><input type="date" id="sn-fecha"></div>
+          <div class="fg"><label>Fecha</label><input type="date" id="sn-fecha" min="2000-01-01" max="2099-12-31"></div>
           <div class="fg full"><label>Nota</label><textarea id="sn-texto" placeholder="DESCRIBE LA INTERACCIÓN..." oninput="toUpper(this)" style="min-height:56px"></textarea></div>
         </div>
         <button class="btn btn-t btn-sm" onclick="addNotaSV()"><i class="ti ti-plus"></i>Agregar nota</button>
@@ -1089,7 +1089,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
           <option>Envío de propuesta</option><option>Reunión virtual</option><option>Tarea general</option>
         </select>
       </div>
-      <div class="fg"><label>Fecha *</label><input type="date" id="ta-fecha"></div>
+      <div class="fg"><label>Fecha *</label><input type="date" id="ta-fecha" min="2000-01-01" max="2099-12-31"></div>
       <div class="fg full"><label>Descripción *</label><textarea id="ta-desc" placeholder="DESCRIPCIÓN DE LA TAREA..." oninput="toUpper(this)" style="min-height:80px"></textarea></div>
       <div class="fg full"><label>Empresa / Contacto relacionado</label>
         <input id="ta-emp" placeholder="OPCIONAL — escribir nombre..." oninput="toUpper(this)">
@@ -1846,7 +1846,7 @@ function rCots(){
       +'<input class="ci" value="'+(c.num||'')+'" onchange="updCot('+i+',\'num\',this.value.toUpperCase());this.value=this.value.toUpperCase();" placeholder="MAY26-11 R1" style="width:140px;font-weight:700;color:var(--blue)">'
       +'<input type="number" class="ci" value="'+(c.valor||'')+'" onchange="updCot('+i+',\'valor\',+this.value)" placeholder="Valor MXN" style="width:130px">'
       +'<input class="ci" value="'+(c.desc||'')+'" onchange="updCot('+i+',\'desc\',this.value.toUpperCase());this.value=this.value.toUpperCase();" placeholder="MOTIVO DEL CAMBIO" style="width:200px">'
-      +'<input type="date" class="ci" value="'+(c.fecha||'')+'" onchange="updCot('+i+',\'fecha\',this.value)" style="width:140px">'
+      +'<input type="date" class="ci" value="'+(c.fecha||'')+'" onchange="updCot('+i+',\'fecha\',this.value)" style="width:140px" min="2000-01-01" max="2099-12-31">'
       +'</div>'+(c.activa?'<span class="cot-tag">✓ ACTIVA</span>':'<button class="btn btn-sm" onclick="setAct('+i+')">Activar</button>')
       +'<button class="btn btn-sm btn-d" onclick="delCot('+i+')"><i class="ti ti-trash"></i></button></div>';
   }).join('');
@@ -2027,7 +2027,7 @@ function rCotsSV(){
       +'<input class="ci" value="'+(c.num||'')+'" onchange="_cotsv['+i+'].num=this.value.toUpperCase();this.value=this.value.toUpperCase();" placeholder="MT-NEM-001 R1" style="width:140px;font-weight:700;color:var(--teal)">'
       +'<input type="number" class="ci" value="'+(c.valor||'')+'" onchange="_cotsv['+i+'].valor=+this.value" placeholder="Valor MXN" style="width:130px">'
       +'<input class="ci" value="'+(c.desc||'')+'" onchange="_cotsv['+i+'].desc=this.value.toUpperCase();this.value=this.value.toUpperCase();" placeholder="MOTIVO DEL CAMBIO" style="width:200px">'
-      +'<input type="date" class="ci" value="'+(c.fecha||'')+'" onchange="_cotsv['+i+'].fecha=this.value" style="width:140px">'
+      +'<input type="date" class="ci" value="'+(c.fecha||'')+'" onchange="_cotsv['+i+'].fecha=this.value" style="width:140px" min="2000-01-01" max="2099-12-31">'
       +'</div>'+(c.activa?'<span class="cot-tag" style="background:var(--teal)">✓ ACTIVA</span>':'<button class="btn btn-sm" onclick="setActSV('+i+')">Activar</button>')
       +'<button class="btn btn-sm btn-d" onclick="delCotSV('+i+')"><i class="ti ti-trash"></i></button></div>';
   }).join('');
@@ -2585,9 +2585,9 @@ function rFacturacion(mod){
       +'<td style="padding:6px 10px;text-align:right"><span style="font-size:12px;font-weight:600">'+fmt(subtotalRow)+'</span></td>'
       +'<td style="padding:6px 10px;text-align:right;color:var(--text3);font-size:11px">'+fmt(ivaRow)+'</td>'
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right;font-weight:700" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
-      +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_fact||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px"></td>'
+      +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_fact||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px" min="2000-01-01" max="2099-12-31"></td>'
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right" min="0"></td>'
-      +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px"></td>'
+      +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px" min="2000-01-01" max="2099-12-31"></td>'
       +'<td style="padding:6px 10px;text-align:center">'+estadoBadge+'</td>'
       +'<td style="padding:6px 4px"><button class="btn btn-sm btn-d" data-mod="'+mod+'" data-idx="'+i+'" onclick="parcDel(this)"><i class="ti ti-trash"></i></button></td>'
       +'</tr>';
