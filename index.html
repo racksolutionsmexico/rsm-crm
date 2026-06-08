@@ -2515,6 +2515,31 @@ function addParcialidad(mod){
   rFacturacion(mod);
 }
 
+function fmtNum(n){
+  if(!n&&n!==0)return'';
+  return'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function montoFocus(el){
+  var v=el.dataset.val||'';
+  el.value=v?Number(v).toFixed(2):'';
+  el.type='number';
+  el.step='0.01';
+  el.min='0';
+  el.select();
+}
+
+function montoBlur(el,mod){
+  var raw=parseFloat(el.value)||0;
+  el.dataset.val=raw;
+  el.type='text';
+  el.value=raw>0?fmtNum(raw):'';
+  var arr=mod==='sv'?_parcSV:_parcDict;
+  var idx=+el.dataset.idx;
+  if(arr[idx]) arr[idx][el.dataset.key]=raw;
+  rFacturacion(mod);
+}
+
 function rFacturacion(mod){
   var arr=mod==='dict'?_parcDict:_parcSV;
   var listId=mod==='dict'?'fact-list-dict':'fact-list-sv';
@@ -2626,33 +2651,6 @@ function rFacturacion(mod){
     +'<div class="kpi" style="--kc:var(--blue)"><div class="kpi-l">Total c/IVA facturado</div><div class="kpi-v">'+fmt(totalFact)+'</div></div>'
     +'<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Total cobrado c/IVA</div><div class="kpi-v" style="color:var(--green)">'+fmt(totalPago)+'</div><div class="kpi-s">'+pctCobrado+'% cobrado</div></div>'
     +'<div class="kpi" style="--kc:'+(pendiente>0?'var(--red)':'var(--green)')+'"><div class="kpi-l">Por cobrar c/IVA</div><div class="kpi-v" style="color:'+(pendiente>0?'var(--red)':'var(--green)')+'">'+fmt(pendiente)+'</div></div>';
-}
-
-function fmtNum(n){
-  if(!n&&n!==0)return'';
-  return'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
-function montoFocus(el){
-  // Al enfocar mostrar número puro para editar
-  var v=el.dataset.val||'';
-  el.value=v?Number(v).toFixed(2):'';
-  el.type='number';
-  el.step='0.01';
-  el.min='0';
-  el.select();
-}
-
-function montoBlur(el,mod){
-  var raw=parseFloat(el.value)||0;
-  el.dataset.val=raw;
-  el.type='text';
-  el.value=raw>0?fmtNum(raw):'';
-  // Guardar en el array
-  var arr=mod==='sv'?_parcSV:_parcDict;
-  var idx=+el.dataset.idx;
-  if(arr[idx]) arr[idx][el.dataset.key]=raw;
-  rFacturacion(mod);
 }
 
 function parcFechaMask(el){
