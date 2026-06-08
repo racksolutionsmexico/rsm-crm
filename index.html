@@ -1091,6 +1091,8 @@ var SBURL='https://vdymdcewmfquemnnpxqb.supabase.co';
 var SBKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkeW1kY2V3bWZxdWVtbm5weHFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njg5NjUsImV4cCI6MjA5NjM0NDk2NX0.QtstCHMq1dEb2KGO08YytqFs_v57lOKD4txV3FQ-84c';
 
 var ETAPAS_D=['Cotización enviada','Cotización aceptada','Inspección programada','En elaboración','Entregado','En seguimiento','Renovación pendiente'];
+var ETAPAS_CON_COSTOS=['Entregado','En seguimiento','Renovación pendiente'];
+var ETAPAS_CON_COSTOS_SV=['Entregado','Instalado','En garantía'];
 var EICONS_D=['ti-send','ti-check','ti-calendar','ti-pencil','ti-file-check','ti-clock','ti-refresh'];
 var ETAPAS_S=['Cotización enviada','Cotización aceptada','Programado','En ejecución','Entregado','Instalado','En garantía'];
 var EICONS_S=['ti-send','ti-check','ti-calendar','ti-tool','ti-file-check','ti-building-factory','ti-shield-check'];
@@ -2385,8 +2387,6 @@ function calcCostoSV(){
 }
 
 // Alerta de costos pendientes al entregar
-var ETAPAS_CON_COSTOS=['Entregado','En seguimiento','Renovación pendiente'];
-
 function checkAlertaCostos(etapa, tipo){
   if(tipo==='dict'){
     var bloq=document.getElementById('costos-bloqueado');
@@ -2428,7 +2428,7 @@ function getProyectosSinCostos(){
     }
   });
   DB.servicios.forEach(function(s){
-    if(s.etapa==='Entregado'||s.etapa==='Instalado'){
+    if(ETAPAS_CON_COSTOS_SV.includes(s.etapa)){
       var tc=(s.costo_materiales||0)+(s.costo_montaje||0)+(s.costo_viaticos||0)+(s.costo_otros||0);
       if(tc===0) sin.push({tipo:'servicio',folio:s.folio||aCot(s).num,empresa:getE(s.empresa_id).razon,id:s.id});
     }
@@ -2971,7 +2971,7 @@ function rRepSV(){
   document.getElementById('trep-rs').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD((e.last.created_at||e.last.creado||'').split('T')[0]):'—')+'</td></tr>';}).join('');
 
   // Tabla rentabilidad servicios
-  var rentRowsSV=sv.filter(function(s){return ['Entregado','Instalado','En garantía'].includes(s.etapa);}).map(function(s){
+  var rentRowsSV=sv.filter(function(s){return ETAPAS_CON_COSTOS_SV.includes(s.etapa);}).map(function(s){
     var costos=(s.costo_materiales||0)+(s.costo_montaje||0)+(s.costo_viaticos||0)+(s.costo_otros||0);
     var val=pV(s);var util=val-costos;
     var margen=val>0?Math.round(util/val*100):null;
