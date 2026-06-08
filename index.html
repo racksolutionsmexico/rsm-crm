@@ -349,7 +349,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
       <option>Nivel 1</option><option>Nivel 2</option><option>Nivel 3</option>
     </select>
   </div>
-  <div class="tw"><table><thead><tr>
+  <div class="tw" style="overflow-x:auto"><table style="min-width:1100px"><thead><tr>
     <th>Folio / Cotización</th><th>Empresa</th><th>Contacto</th><th>Nivel</th><th>Etapa</th>
     <th>Valor activo</th><th>Técnico campo</th><th>Ini. Insp.</th><th>Fin Insp.</th><th>Entrega</th><th>Vencimiento</th><th>Cierre</th><th></th>
   </tr></thead><tbody id="tproy"></tbody></table></div>
@@ -1143,7 +1143,17 @@ async function loadAll(){
 // HELPERS
 function uid(){return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&0x3|0x8)).toString(16);});}
 function fmt(n){return n?'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:0}):'—';}
-function fmtD(d){if(!d)return'—';var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function fmtD(d){
+  if(!d)return'—';
+  // Handle full timestamp like "2026-06-06T23:42:17..."
+  var clean=d.split('T')[0];
+  var p=clean.split('-');
+  if(p.length<3)return'—';
+  // Validate year is reasonable
+  var yr=parseInt(p[0]);
+  if(yr<2000||yr>2099)return'—';
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
 function today(){return new Date().toISOString().split('T')[0];}
 function dU(d){if(!d)return null;return Math.round((new Date(d+' 00:00:00')-new Date())/86400000);}
 function dB(a,b){if(!a||!b)return null;return Math.round((new Date(b)-new Date(a))/86400000);}
@@ -2832,7 +2842,7 @@ function rRepDict(){
   ETAPAS_D.forEach(function(et){var r=[1,2,3].map(function(n){return ps.filter(function(p){return p.etapa===et&&p.nivel==='Nivel '+n;}).length;});var tot=r.reduce(function(a,b){return a+b;},0);var mx=Math.max.apply(null,r.concat([1]));hm+='<tr><td style="text-align:left;font-weight:600;font-size:12px">'+et+'</td>'+r.map(function(v){return'<td class="hm'+(v===0?0:v/mx>0.66?3:v/mx>0.33?2:1)+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+(tot||'')+'</td></tr>';});
   document.getElementById('hmap').innerHTML=hm;
   var topE=DB.empresas.map(function(e){var ep=ps.filter(function(p){return p.empresa_id===e.id;});var c=ep.filter(function(p){return p.etapa==='Cotización enviada';}).reduce(function(a,p){return a+pV(p);},0);var v=ep.filter(function(p){return p.etapa!=='Cotización enviada';}).reduce(function(a,p){return a+pV(p);},0);return Object.assign({},e,{cnt:ep.length,cot:c,vend:v,last:ep[0]});}).sort(function(a,b){return b.vend-a.vend;}).slice(0,5);
-  document.getElementById('trep').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD(e.last.created_at):'—')+'</td></tr>';}).join('');
+  document.getElementById('trep').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD((e.last.created_at||'').split('T')[0]):'—')+'</td></tr>';}).join('');
 
   // Tabla rentabilidad dictámenes
   var sinCostosAlert=getProyectosSinCostos().filter(function(x){return x.tipo==='dictamen';});
@@ -2870,7 +2880,7 @@ function rRepSV(){
   charts.svt=new Chart(document.getElementById('ch-svt'),{type:'doughnut',data:{labels:Object.keys(tdata),datasets:[{data:Object.values(tdata),backgroundColor:['#0D7377','#1F3864','#E8501A','#70AD47','#ED7D31','#534AB7','#C00000','#D6DCE4'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}});
   charts.svf=new Chart(document.getElementById('ch-svf'),{type:'pie',data:{labels:['Cotizadas','Vendidas'],datasets:[{data:[cotV,vendV],backgroundColor:['#B2DFDB','#0D7377'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
   var topE=DB.empresas.map(function(e){var es=sv.filter(function(s){return s.empresa_id===e.id;});var c=es.filter(function(s){return s.etapa==='Cotización enviada';}).reduce(function(a,s){return a+pV(s);},0);var v=es.filter(function(s){return s.etapa!=='Cotización enviada';}).reduce(function(a,s){return a+pV(s);},0);return Object.assign({},e,{cnt:es.length,cot:c,vend:v,last:es[0]});}).sort(function(a,b){return b.vend-a.vend;}).slice(0,5);
-  document.getElementById('trep-rs').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD(e.last.created_at||e.last.creado):'—')+'</td></tr>';}).join('');
+  document.getElementById('trep-rs').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD((e.last.created_at||e.last.creado||'').split('T')[0]):'—')+'</td></tr>';}).join('');
 
   // Tabla rentabilidad servicios
   var rentRowsSV=sv.filter(function(s){return s.etapa!=='Cotización enviada';}).map(function(s){
