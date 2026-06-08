@@ -3228,15 +3228,15 @@ function attachDateGuards(){
     el.dataset.guardAttached='1';
     el.setAttribute('min',DATE_MIN);
     el.setAttribute('max',DATE_MAX);
-    el.addEventListener('change',function(){guardDate(this);});
-    el.addEventListener('input',function(){guardDate(this);});
+    // Solo validar al SALIR del campo — no interrumpir mientras escribe
     el.addEventListener('blur',function(){
-      guardDate(this);
-      // Segunda pasada al perder foco — momento más confiable en Chrome
       var v=this.value;
-      if(v){
-        var yr=parseInt(v.split('-')[0],10);
-        if(yr<2000||yr>2099){this.value='';}
+      if(!v)return;
+      var yr=parseInt(v.split('-')[0],10);
+      if(yr<2000||yr>2099){
+        this.value='';
+        this.style.borderColor='var(--red)';
+        setTimeout(function(){el.style.borderColor='';},2000);
       }
     });
   });
