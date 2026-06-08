@@ -2584,9 +2584,17 @@ function rFacturacion(mod){
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.pct||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="pct" onchange="parcUpd(this);parcCalcMonto('+i+',&quot;'+mod+'&quot;)" placeholder="%" style="width:50px;text-align:right" min="0" max="100"></td>'
       +'<td style="padding:6px 10px;text-align:right"><span style="font-size:12px;font-weight:600">'+fmt(subtotalRow)+'</span></td>'
       +'<td style="padding:6px 10px;text-align:right;color:var(--text3);font-size:11px">'+fmt(ivaRow)+'</td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" step="0.01" placeholder="0.00" style="width:120px;text-align:right;font-weight:700;color:var(--blue)" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
+      +'<td style="padding:6px 10px;text-align:right">'
+      +'<input class="ci monto-input" type="text" value="'+(totalRow?fmtNum(totalRow):'')+'" data-val="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact"'
+      +' onfocus="montoFocus(this)" onblur="montoBlur(this,&quot;'+mod+'&quot;)" placeholder="$0.00"'
+      +' style="width:120px;text-align:right;font-weight:700;color:var(--blue)" title="Total con IVA">'
+      +'</td>'
       +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_fact?fmtD(p.fecha_fact):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" step="0.01" placeholder="0.00" style="width:120px;text-align:right;font-weight:700;color:var(--green)" min="0"></td>'
+      +'<td style="padding:6px 10px;text-align:right">'
+      +'<input class="ci monto-input" type="text" value="'+(p.monto_pago?fmtNum(p.monto_pago):'')+'" data-val="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago"'
+      +' onfocus="montoFocus(this)" onblur="montoBlur(this,&quot;'+mod+'&quot;)" placeholder="$0.00"'
+      +' style="width:120px;text-align:right;font-weight:700;color:var(--green)">'
+      +'</td>'
       +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_pago?fmtD(p.fecha_pago):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
       +'<td style="padding:6px 10px;text-align:center">'+estadoBadge+'</td>'
       +'<td style="padding:6px 4px"><button class="btn btn-sm btn-d" data-mod="'+mod+'" data-idx="'+i+'" onclick="parcDel(this)"><i class="ti ti-trash"></i></button></td>'
@@ -2618,6 +2626,33 @@ function rFacturacion(mod){
     +'<div class="kpi" style="--kc:var(--blue)"><div class="kpi-l">Total c/IVA facturado</div><div class="kpi-v">'+fmt(totalFact)+'</div></div>'
     +'<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Total cobrado c/IVA</div><div class="kpi-v" style="color:var(--green)">'+fmt(totalPago)+'</div><div class="kpi-s">'+pctCobrado+'% cobrado</div></div>'
     +'<div class="kpi" style="--kc:'+(pendiente>0?'var(--red)':'var(--green)')+'"><div class="kpi-l">Por cobrar c/IVA</div><div class="kpi-v" style="color:'+(pendiente>0?'var(--red)':'var(--green)')+'">'+fmt(pendiente)+'</div></div>';
+}
+
+function fmtNum(n){
+  if(!n&&n!==0)return'';
+  return'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function montoFocus(el){
+  // Al enfocar mostrar número puro para editar
+  var v=el.dataset.val||'';
+  el.value=v?Number(v).toFixed(2):'';
+  el.type='number';
+  el.step='0.01';
+  el.min='0';
+  el.select();
+}
+
+function montoBlur(el,mod){
+  var raw=parseFloat(el.value)||0;
+  el.dataset.val=raw;
+  el.type='text';
+  el.value=raw>0?fmtNum(raw):'';
+  // Guardar en el array
+  var arr=mod==='sv'?_parcSV:_parcDict;
+  var idx=+el.dataset.idx;
+  if(arr[idx]) arr[idx][el.dataset.key]=raw;
+  rFacturacion(mod);
 }
 
 function parcFechaMask(el){
