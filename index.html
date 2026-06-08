@@ -298,7 +298,8 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
     <div><div class="shdr">📋 Dictámenes</div>
       <div class="kg2" id="kpi-dict"></div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px" id="kpi-costos-dash-dict"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px" id="kpi-costos-dash-dict"></div>
+      <div style="margin-bottom:8px" id="kpi-resultados-dash"></div></div>
     <div><div class="shdr" style="border-color:var(--teal)">🔧 Racks y Servicios</div>
       <div class="kg2" id="kpi-rs"></div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px" id="kpi-costos-dash-rs"></div></div>
@@ -350,7 +351,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
     </select>
   </div>
   <div class="tw" style="overflow-x:auto"><table style="min-width:1100px"><thead><tr>
-    <th>Folio / Cotización</th><th>Empresa</th><th>Contacto</th><th>Nivel</th><th>Etapa</th>
+    <th>Folio / Cotización</th><th>Empresa</th><th>Contacto</th><th>Nivel</th><th>Etapa</th><th>Resultado</th>
     <th>Valor activo</th><th>Técnico campo</th><th>Ini. Insp.</th><th>Fin Insp.</th><th>Entrega</th><th>Vencimiento</th><th>Cierre</th><th></th>
   </tr></thead><tbody id="tproy"></tbody></table></div>
 </div>
@@ -506,9 +507,15 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
       <div class="cw" style="height:160px"><canvas id="chci"></canvas></div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px" id="cistats"></div>
     </div>
-    <div class="cc" style="margin-bottom:16px">
-      <div class="ct">Mapa de calor — proyectos por etapa y nivel</div>
-      <table class="heatmap" id="hmap"></table>
+    <div class="cg">
+      <div class="cc" style="margin-bottom:16px">
+        <div class="ct">Mapa de calor — proyectos por etapa y nivel</div>
+        <table class="heatmap" id="hmap"></table>
+      </div>
+      <div class="cc" style="margin-bottom:16px">
+        <div class="ct">Distribución de resultados de dictámenes</div>
+        <div class="cw"><canvas id="ch-resultados"></canvas></div>
+      </div>
     </div>
     <!-- RENTABILIDAD DICTAMENES -->
     <div class="cc" style="margin-bottom:16px">
@@ -1143,6 +1150,18 @@ async function loadAll(){
 // HELPERS
 function uid(){return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&0x3|0x8)).toString(16);});}
 function fmt(n){return n?'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:0}):'—';}
+function fmtResultado(r){
+  if(!r) return '<span style="color:var(--text3);font-size:11px">—</span>';
+  var m={
+    'aprobado':     '<span class="badge" style="background:#EAF3DE;color:#3B6D11">✅ Aprobado</span>',
+    'aprobado-obs': '<span class="badge" style="background:#FFF9C4;color:#F57F17">⚠️ Con observaciones</span>',
+    'condicional':  '<span class="badge" style="background:#FAEEDA;color:#854F0B">🔶 Condicional</span>',
+    'suspendido':   '<span class="badge" style="background:#FCEBEB;color:#A32D2D">🚫 Suspendido</span>',
+    'rechazado':    '<span class="badge" style="background:#FCEBEB;color:#A32D2D">❌ Rechazado</span>'
+  };
+  return m[r]||'<span style="color:var(--text3);font-size:11px">—</span>';
+}
+
 function fmtD(d){
   if(!d)return'—';
   // Handle full timestamp like "2026-06-06T23:42:17..."
@@ -1440,6 +1459,24 @@ updTopbarCtx('dashboard');
   if(kpiCD) kpiCD.innerHTML=
     '<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Utilidad bruta (entregados)</div><div class="kpi-v" style="color:'+(dUtilidad>=0?'var(--green)':'var(--red)')+'">'+fmt(dUtilidad)+'</div></div>'+
     '<div class="kpi" style="--kc:'+dMargenColor+'"><div class="kpi-l">Margen promedio</div><div class="kpi-v" style="color:'+dMargenColor+'">'+dMargen+'%</div>'+(sinCostosDash.filter(function(x){return x.tipo==='dictamen';}).length?'<div class="kpi-s" style="color:var(--amber)">⚠️ '+sinCostosDash.filter(function(x){return x.tipo==='dictamen';}).length+' sin costos</div>':'')+'</div>';
+  // Resumen resultados dictámenes
+  var entregados=ps.filter(function(p){return p.estado_dictamen;});
+  var rApro=ps.filter(function(p){return p.estado_dictamen==='aprobado';}).length;
+  var rApObs=ps.filter(function(p){return p.estado_dictamen==='aprobado-obs';}).length;
+  var rCond=ps.filter(function(p){return p.estado_dictamen==='condicional';}).length;
+  var rSusp=ps.filter(function(p){return p.estado_dictamen==='suspendido';}).length;
+  var rRech=ps.filter(function(p){return p.estado_dictamen==='rechazado';}).length;
+  var rEl=document.getElementById('kpi-resultados-dash');
+  if(rEl&&entregados.length){
+    rEl.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Resultados de dictámenes</div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap">'
+      +(rApro?'<span class="badge" style="background:#EAF3DE;color:#3B6D11">✅ Aprobado: '+rApro+'</span>':'')
+      +(rApObs?'<span class="badge" style="background:#FFF9C4;color:#F57F17">⚠️ Con obs.: '+rApObs+'</span>':'')
+      +(rCond?'<span class="badge" style="background:#FAEEDA;color:#854F0B">🔶 Condicional: '+rCond+'</span>':'')
+      +(rSusp?'<span class="badge" style="background:#FCEBEB;color:#A32D2D">🚫 Suspendido: '+rSusp+'</span>':'')
+      +(rRech?'<span class="badge" style="background:#FCEBEB;color:#A32D2D">❌ Rechazado: '+rRech+'</span>':'')
+      +'</div>';
+  } else if(rEl){rEl.innerHTML='';}
   document.getElementById('kpi-rs').innerHTML=
     '<div class="kpi" style="--kc:var(--teal)"><div class="kpi-l">Cotizadas</div><div class="kpi-v">'+fmt(sCot)+'</div><div class="kpi-s">'+sv.filter(function(s){return s.etapa==='Cotización enviada';}).length+' proyectos</div></div>'+
     '<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Vendidas</div><div class="kpi-v">'+fmt(sVend)+'</div><div class="kpi-s">'+sv.filter(function(s){return s.etapa!=='Cotización enviada';}).length+' proyectos</div></div>';
@@ -1620,6 +1657,7 @@ function rProyectos(){
       +'<td>'+getE(p.empresa_id).razon+'</td>'+'<td style="font-size:12px">'+getC(p.contacto_id).nombre+'</td>'
       +'<td><span class="badge '+nCls(p.nivel)+'">'+p.nivel+'</span></td>'
       +'<td><span class="badge '+etCls(p.etapa)+'">'+p.etapa+'</span></td>'
+      +'<td>'+fmtResultado(p.estado_dictamen)+'</td>'
       +'<td style="font-weight:700">'+fmt(pV(p))+'</td>'
       +'<td style="font-size:11px;color:var(--text3)">'+(p.tecnico_campo||p.tcampo||'—')+'</td>'
       +'<td style="font-size:12px">'+fmtD(p.finsp_ini)+'</td>'
@@ -2841,6 +2879,18 @@ function rRepDict(){
   var hm='<tr><th style="text-align:left">Etapa \\ Nivel</th><th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th><th>Total</th></tr>';
   ETAPAS_D.forEach(function(et){var r=[1,2,3].map(function(n){return ps.filter(function(p){return p.etapa===et&&p.nivel==='Nivel '+n;}).length;});var tot=r.reduce(function(a,b){return a+b;},0);var mx=Math.max.apply(null,r.concat([1]));hm+='<tr><td style="text-align:left;font-weight:600;font-size:12px">'+et+'</td>'+r.map(function(v){return'<td class="hm'+(v===0?0:v/mx>0.66?3:v/mx>0.33?2:1)+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+(tot||'')+'</td></tr>';});
   document.getElementById('hmap').innerHTML=hm;
+  // Gráfica distribución resultados
+  var rLabels=['✅ Aprobado','⚠️ Con obs.','🔶 Condicional','🚫 Suspendido','❌ Rechazado'];
+  var rVals=[
+    ps.filter(function(p){return p.estado_dictamen==='aprobado';}).length,
+    ps.filter(function(p){return p.estado_dictamen==='aprobado-obs';}).length,
+    ps.filter(function(p){return p.estado_dictamen==='condicional';}).length,
+    ps.filter(function(p){return p.estado_dictamen==='suspendido';}).length,
+    ps.filter(function(p){return p.estado_dictamen==='rechazado';}).length
+  ];
+  var rColors=['#70AD47','#FFD54F','#ED7D31','#E8501A','#C00000'];
+  var chRes=document.getElementById('ch-resultados');
+  if(chRes) charts.res=new Chart(chRes,{type:'doughnut',data:{labels:rLabels,datasets:[{data:rVals,backgroundColor:rColors,borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
   var topE=DB.empresas.map(function(e){var ep=ps.filter(function(p){return p.empresa_id===e.id;});var c=ep.filter(function(p){return p.etapa==='Cotización enviada';}).reduce(function(a,p){return a+pV(p);},0);var v=ep.filter(function(p){return p.etapa!=='Cotización enviada';}).reduce(function(a,p){return a+pV(p);},0);return Object.assign({},e,{cnt:ep.length,cot:c,vend:v,last:ep[0]});}).sort(function(a,b){return b.vend-a.vend;}).slice(0,5);
   document.getElementById('trep').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD((e.last.created_at||'').split('T')[0]):'—')+'</td></tr>';}).join('');
 
