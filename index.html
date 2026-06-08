@@ -2492,9 +2492,14 @@ function sugerirFacturacion(mod){
     ? _cots.reduce(function(a,c){return c.activa?+(c.valor)||0:a;},0)
     : _cotsv.reduce(function(a,c){return c.activa?+(c.valor)||0:a;},0);
   var esquema=mod==='dict'?ESQUEMA_DICT:ESQUEMA_SV;
+  var IVA=0.16;
   var arr=esquema.map(function(e){
-    return{id:uid(),concepto:e.concepto,pct:e.pct,monto_fact:Math.round(val*e.pct/100*100)/100,
-      fecha_fact:'',monto_pago:'',fecha_pago:'',metodo:''};
+    var subtotal=Math.round(val*e.pct/100*100)/100;
+    var iva=Math.round(subtotal*IVA*100)/100;
+    var total=Math.round((subtotal+iva)*100)/100;
+    return{id:uid(),concepto:e.concepto,pct:e.pct,
+      subtotal:subtotal,iva:iva,monto_fact:total,
+      fecha_fact:'',monto_pago:'',fecha_pago:''};
   });
   if(mod==='dict') _parcDict=arr;
   else _parcSV=arr;
@@ -2543,13 +2548,16 @@ function rFacturacion(mod){
     +(pendiente>0?' · <span style="color:var(--red);font-weight:700">Pendiente: '+fmt(pendiente)+'</span>':'<span style="color:var(--green);font-weight:700"> ✓ Saldado</span>');
 
   // Tabla de parcialidades
+  var IVA_RATE=0.16;
   var html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'
     +'<thead><tr style="background:var(--gray)">'
     +'<th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap">Concepto</th>'
     +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">%</th>'
-    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">Monto a facturar</th>'
+    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">Subtotal s/IVA</th>'
+    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">IVA 16%</th>'
+    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">Total c/IVA</th>'
     +'<th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--text3)">Fecha factura</th>'
-    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">Monto cobrado</th>'
+    +'<th style="padding:8px 10px;text-align:right;font-size:11px;font-weight:700;color:var(--text3)">Cobrado c/IVA</th>'
     +'<th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--text3)">Fecha pago</th>'
     +'<th style="padding:8px 10px;text-align:center;font-size:11px;font-weight:700;color:var(--text3)">Estado</th>'
     +'<th style="padding:8px 4px"></th>'
@@ -2558,6 +2566,11 @@ function rFacturacion(mod){
   arr.forEach(function(p,i){
     var pagado=+p.monto_pago>0;
     var completo=+p.monto_pago>=+p.monto_fact&&+p.monto_fact>0;
+    // Calcular IVA de la fila (solo informativo)
+    var subtotalRow=p.subtotal||(p.monto_fact?(Math.round(p.monto_fact/1.16*100)/100):0);
+    var ivaRow=p.iva||(subtotalRow?Math.round(subtotalRow*IVA_RATE*100)/100:0);
+    var totalRow=Math.round((subtotalRow+ivaRow)*100)/100;
+
     var estadoBadge=completo
       ?'<span class="badge" style="background:#EAF3DE;color:#3B6D11">✅ Pagado</span>'
       :pagado
@@ -2567,9 +2580,11 @@ function rFacturacion(mod){
           :'<span class="badge" style="background:var(--gray);color:var(--text3)">— Sin factura</span>';
 
     html+='<tr style="border-bottom:0.5px solid var(--border)">'
-      +'<td style="padding:6px 10px"><input class="ci" value="'+(p.concepto||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="concepto" onchange="parcUpd(this)" oninput="toUpper(this)" placeholder="CONCEPTO" style="width:180px"></td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.pct||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="pct" onchange="parcUpd(this);parcCalcMonto('+i+',&quot;'+mod+'&quot;)" placeholder="%" style="width:55px;text-align:right" min="0" max="100"></td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_fact||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right" min="0"></td>'
+      +'<td style="padding:6px 10px"><input class="ci" value="'+(p.concepto||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="concepto" onchange="parcUpd(this)" oninput="toUpper(this)" placeholder="CONCEPTO" style="width:160px"></td>'
+      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.pct||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="pct" onchange="parcUpd(this);parcCalcMonto('+i+',&quot;'+mod+'&quot;)" placeholder="%" style="width:50px;text-align:right" min="0" max="100"></td>'
+      +'<td style="padding:6px 10px;text-align:right"><span style="font-size:12px;font-weight:600">'+fmt(subtotalRow)+'</span></td>'
+      +'<td style="padding:6px 10px;text-align:right;color:var(--text3);font-size:11px">'+fmt(ivaRow)+'</td>'
+      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right;font-weight:700" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
       +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_fact||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px"></td>'
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right" min="0"></td>'
       +'<td style="padding:6px 10px"><input class="ci" type="date" value="'+(p.fecha_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" style="width:130px"></td>'
@@ -2582,12 +2597,15 @@ function rFacturacion(mod){
   el.innerHTML=html;
 
   // KPIs
+  // Calcular totales sin IVA para referencia
+  var totalSubtotal=arr.reduce(function(a,p){return a+(p.subtotal||(p.monto_fact?Math.round(p.monto_fact/1.16*100)/100:0));},0);
+  var totalIVA=arr.reduce(function(a,p){return a+(p.iva||(p.subtotal?Math.round(p.subtotal*0.16*100)/100:0));},0);
   var kpiEl=document.getElementById(kpiId);
   if(kpiEl) kpiEl.innerHTML=
-    '<div class="kpi" style="--kc:#185FA5"><div class="kpi-l">Total a facturar</div><div class="kpi-v">'+fmt(totalFact)+'</div>'+(valCot&&totalFact!==valCot?'<div class="kpi-s" style="color:var(--amber)">Cotizado: '+fmt(valCot)+'</div>':'')+'</div>'
-    +'<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Total cobrado</div><div class="kpi-v" style="color:var(--green)">'+fmt(totalPago)+'</div><div class="kpi-s">'+pctCobrado+'% del facturado</div></div>'
-    +'<div class="kpi" style="--kc:'+(pendiente>0?'var(--red)':'var(--green)')+'"><div class="kpi-l">Por cobrar</div><div class="kpi-v" style="color:'+(pendiente>0?'var(--red)':'var(--green)')+'">'+fmt(pendiente)+'</div></div>'
-    +'<div class="kpi" style="--kc:var(--orange)"><div class="kpi-l">Parcialidades</div><div class="kpi-v">'+arr.filter(function(p){return +p.monto_pago>=+p.monto_fact&&+p.monto_fact>0;}).length+'/'+arr.length+'</div><div class="kpi-s">pagadas</div></div>';
+    '<div class="kpi" style="--kc:#185FA5"><div class="kpi-l">Subtotal s/IVA</div><div class="kpi-v">'+fmt(totalSubtotal)+'</div><div class="kpi-s" style="color:var(--text3)">IVA: '+fmt(totalIVA)+'</div></div>'
+    +'<div class="kpi" style="--kc:var(--blue)"><div class="kpi-l">Total c/IVA facturado</div><div class="kpi-v">'+fmt(totalFact)+'</div></div>'
+    +'<div class="kpi" style="--kc:var(--green)"><div class="kpi-l">Total cobrado c/IVA</div><div class="kpi-v" style="color:var(--green)">'+fmt(totalPago)+'</div><div class="kpi-s">'+pctCobrado+'% cobrado</div></div>'
+    +'<div class="kpi" style="--kc:'+(pendiente>0?'var(--red)':'var(--green)')+'"><div class="kpi-l">Por cobrar c/IVA</div><div class="kpi-v" style="color:'+(pendiente>0?'var(--red)':'var(--green)')+'">'+fmt(pendiente)+'</div></div>';
 }
 
 function parcUpd(el){
@@ -2605,7 +2623,11 @@ function parcCalcMonto(i,mod){
     ? _cots.reduce(function(a,c){return c.activa?+(c.valor)||0:a;},0)
     : _cotsv.reduce(function(a,c){return c.activa?+(c.valor)||0:a;},0);
   if(arr[i]&&valCot&&arr[i].pct){
-    arr[i].monto_fact=Math.round(valCot*arr[i].pct/100*100)/100;
+    var subtotal=Math.round(valCot*arr[i].pct/100*100)/100;
+    var iva=Math.round(subtotal*0.16*100)/100;
+    arr[i].subtotal=subtotal;
+    arr[i].iva=iva;
+    arr[i].monto_fact=Math.round((subtotal+iva)*100)/100;
     rFacturacion(mod);
   }
 }
