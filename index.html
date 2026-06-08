@@ -1700,13 +1700,14 @@ async function saveP(){
   if(!empId){alert('Selecciona una empresa.');return;}
   var etapa=document.getElementById('p-etapa').value;
   var btn=document.getElementById('bsp');btn.disabled=true;btn.textContent='Guardando...';
-  var data={empresa_id:empId,contacto_id:document.getElementById('p-cont').value||null,nivel:document.getElementById('p-niv').value,etapa:etapa,folio:document.getElementById('p-folio').value,checklist:document.getElementById('p-chk').value,tecnico_campo:document.getElementById('p-tcampo').value,ingeniero:document.getElementById('p-ting').value,faceptacion:document.getElementById('p-facp').value||null,finsp_ini:document.getElementById('p-fins-i').value||null,finsp_fin:document.getElementById('p-fins-f').value||null,fentrega:document.getElementById('p-fent').value||null,fvence:document.getElementById('p-fvence').value||null,fseg:document.getElementById('p-fseg').value||null,fcreado:document.getElementById('p-fcreado').value||null,fcerrado:document.getElementById('p-fcerrado').value||null,desc_proyecto:document.getElementById('p-desc').value,
-    estado_dictamen:document.getElementById('p-estado-dict').value,
+  function gv(id){var e=document.getElementById(id);return e?e.value:'';}
+  var data={empresa_id:empId,contacto_id:gv('p-cont')||null,nivel:gv('p-niv'),etapa:etapa,folio:gv('p-folio'),checklist:gv('p-chk'),tecnico_campo:'',ingeniero:'',faceptacion:gv('p-facp')||null,finsp_ini:gv('p-fins-i')||null,finsp_fin:gv('p-fins-f')||null,fentrega:gv('p-fent')||null,fvence:gv('p-fvence')||null,fseg:gv('p-fseg')||null,fcreado:gv('p-fcreado')||null,fcerrado:gv('p-fcerrado')||null,desc_proyecto:gv('p-desc'),
+    estado_dictamen:gv('p-estado-dict'),
     sistemas:_sistemas,personal:_tecnicos,
-    costo_personal:+(document.getElementById('p-costo-personal').value)||0,
-    costo_viaticos:+(document.getElementById('p-costo-viaticos').value)||0,
-    costo_dictamen:+(document.getElementById('p-costo-dictamen').value)||0,
-    costo_otros:+(document.getElementById('p-costo-otros').value)||0,
+    costo_personal:+gv('p-costo-personal')||0,
+    costo_viaticos:+gv('p-costo-viaticos')||0,
+    costo_dictamen:+gv('p-costo-dictamen')||0,
+    costo_otros:+gv('p-costo-otros')||0,
     cotizaciones:_cots,notas_seg:_notas};
   setSyncing();
   try{
