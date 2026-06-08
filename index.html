@@ -762,6 +762,12 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
 
     <!-- COSTOS DICTAMEN -->
     <div class="tp" id="tpcostos">
+      <div id="costos-bloqueado" style="display:none;text-align:center;padding:40px 20px;color:var(--text3)">
+        <i class="ti ti-lock" style="font-size:40px;display:block;margin-bottom:12px;color:var(--lgray)"></i>
+        <div style="font-size:15px;font-weight:600;color:var(--text2);margin-bottom:6px">Costos disponibles al entregar</div>
+        <div style="font-size:13px">Cambia la etapa a <b>Entregado</b> para registrar los costos reales del proyecto.</div>
+      </div>
+      <div id="costos-form-dict">
       <div class="ibox" style="border-color:var(--green)"><i class="ti ti-info-circle"></i> Registra los costos <b>reales</b> al finalizar el proyecto. Se calculará la utilidad y margen automáticamente.</div>
       <div id="alert-costos-dict" style="display:none;margin-bottom:12px"></div>
       <div class="fgrid">
@@ -783,6 +789,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
         </div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px" id="kpi-costos-dict"></div>
+      </div><!-- /costos-form-dict -->
     </div>
 
     <div class="tp" id="tpc">
@@ -1151,13 +1158,15 @@ async function loadAll(){
 function uid(){return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:(r&0x3|0x8)).toString(16);});}
 function fmt(n){return n?'$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:0}):'—';}
 function fmtMargen(p){
+  // Solo mostrar margen si el proyecto fue entregado
+  if(!ETAPAS_CON_COSTOS.includes(p.etapa)) return '<span style="color:var(--text3)">—</span>';
   var costos=(p.costo_personal||0)+(p.costo_viaticos||0)+(p.costo_dictamen||0)+(p.costo_otros||0);
-  if(costos===0) return '<span style="color:var(--text3)">—</span>';
+  if(costos===0) return '<span style="color:var(--text3);font-size:10px">sin costos</span>';
   var val=pV(p);
   if(val===0) return '<span style="color:var(--text3)">—</span>';
   var margen=Math.round((val-costos)/val*100);
   var color=margen>=40?'var(--green)':margen>=20?'var(--amber)':'var(--red)';
-  return '<span style="color:'+color+'">'+margen+'%</span>';
+  return '<span style="color:'+color+';font-weight:700">'+margen+'%</span>';
 }
 
 function fmtResultado(r){
@@ -2376,17 +2385,36 @@ function calcCostoSV(){
 }
 
 // Alerta de costos pendientes al entregar
+var ETAPAS_CON_COSTOS=['Entregado','En seguimiento','Renovación pendiente'];
+
 function checkAlertaCostos(etapa, tipo){
-  var alertId = tipo==='dict' ? 'alert-costos-dict' : 'alert-costos-sv';
-  var el = document.getElementById(alertId); if(!el) return;
-  var tieneCostos = tipo==='dict'
-    ? ((+(document.getElementById('p-costo-personal').value)||0)+(+(document.getElementById('p-costo-viaticos').value)||0)+(+(document.getElementById('p-costo-dictamen').value)||0)) > 0
-    : ((+(document.getElementById('s-costo-mat').value)||0)+(+(document.getElementById('s-costo-mont').value)||0)+(+(document.getElementById('s-costo-viat').value)||0)) > 0;
-  if(etapa==='Entregado' && !tieneCostos){
-    el.style.display='block';
-    el.innerHTML='<div class="alert alert-a"><i class="ti ti-alert-triangle"></i><div><b>Proyecto entregado sin costos registrados</b><br>Registra los costos finales para calcular tu utilidad real. La alerta desaparece al guardar los costos.</div></div>';
+  if(tipo==='dict'){
+    var bloq=document.getElementById('costos-bloqueado');
+    var form=document.getElementById('costos-form-dict');
+    var bloqueado=!ETAPAS_CON_COSTOS.includes(etapa);
+    if(bloq) bloq.style.display=bloqueado?'block':'none';
+    if(form) form.style.display=bloqueado?'none':'block';
+    if(bloqueado) return;
+    var alertEl=document.getElementById('alert-costos-dict');
+    if(!alertEl) return;
+    var tieneCostos=((+(document.getElementById('p-costo-personal').value)||0)+(+(document.getElementById('p-costo-viaticos').value)||0)+(+(document.getElementById('p-costo-dictamen').value)||0)+(+(document.getElementById('p-costo-otros').value)||0))>0;
+    if(!tieneCostos){
+      alertEl.style.display='block';
+      alertEl.innerHTML='<div class="alert alert-a"><i class="ti ti-alert-triangle"></i><div><b>Proyecto entregado sin costos registrados</b><br>Registra los costos finales para calcular tu utilidad real.</div></div>';
+    } else {
+      alertEl.style.display='none';
+    }
   } else {
-    el.style.display='none';
+    var alertId='alert-costos-sv';
+    var el=document.getElementById(alertId); if(!el) return;
+    var tieneCostosSV=((+(document.getElementById('s-costo-mat').value)||0)+(+(document.getElementById('s-costo-mont').value)||0)+(+(document.getElementById('s-costo-viat').value)||0)+(+(document.getElementById('s-costo-otros').value)||0))>0;
+    var etapasConCostosSV=['Entregado','Instalado','En garantía'];
+    if(etapasConCostosSV.includes(etapa)&&!tieneCostosSV){
+      el.style.display='block';
+      el.innerHTML='<div class="alert alert-a"><i class="ti ti-alert-triangle"></i><div><b>Servicio entregado sin costos registrados</b><br>Registra los costos finales para calcular tu utilidad real.</div></div>';
+    } else {
+      el.style.display='none';
+    }
   }
 }
 
@@ -2908,7 +2936,7 @@ function rRepDict(){
   var sinCostosAlert=getProyectosSinCostos().filter(function(x){return x.tipo==='dictamen';});
   var alertSC=document.getElementById('alert-sin-costos');
   if(alertSC) alertSC.innerHTML=sinCostosAlert.length?'<div class="alert alert-a"><i class="ti ti-alert-triangle"></i><div><b>'+sinCostosAlert.length+' proyecto(s) entregados sin costos registrados</b><br><small>'+sinCostosAlert.map(function(x){return x.folio;}).join(', ')+'</small></div></div>':'';
-  var rentRows=ps.filter(function(p){return p.etapa!=='Cotización enviada';}).map(function(p){
+  var rentRows=ps.filter(function(p){return ETAPAS_CON_COSTOS.includes(p.etapa);}).map(function(p){
     var costos=(p.costo_personal||0)+(p.costo_viaticos||0)+(p.costo_dictamen||0)+(p.costo_otros||0);
     var val=pV(p);var util=val-costos;
     var margen=val>0?Math.round(util/val*100):null;
@@ -2943,7 +2971,7 @@ function rRepSV(){
   document.getElementById('trep-rs').innerHTML=topE.map(function(e){return'<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="'+avatarStyle(e.sector)+'">'+ini(e.razon)+'</div><div class="tdb">'+e.razon+'</div></div></td><td>'+e.cnt+'</td><td>'+fmt(e.cot)+'</td><td style="font-weight:700;color:var(--green)">'+fmt(e.vend)+'</td><td style="font-size:12px;color:var(--text3)">'+(e.last?fmtD((e.last.created_at||e.last.creado||'').split('T')[0]):'—')+'</td></tr>';}).join('');
 
   // Tabla rentabilidad servicios
-  var rentRowsSV=sv.filter(function(s){return s.etapa!=='Cotización enviada';}).map(function(s){
+  var rentRowsSV=sv.filter(function(s){return ['Entregado','Instalado','En garantía'].includes(s.etapa);}).map(function(s){
     var costos=(s.costo_materiales||0)+(s.costo_montaje||0)+(s.costo_viaticos||0)+(s.costo_otros||0);
     var val=pV(s);var util=val-costos;
     var margen=val>0?Math.round(util/val*100):null;
