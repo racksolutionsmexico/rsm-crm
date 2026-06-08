@@ -2585,9 +2585,9 @@ function rFacturacion(mod){
       +'<td style="padding:6px 10px;text-align:right"><span style="font-size:12px;font-weight:600">'+fmt(subtotalRow)+'</span></td>'
       +'<td style="padding:6px 10px;text-align:right;color:var(--text3);font-size:11px">'+fmt(ivaRow)+'</td>'
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right;font-weight:700" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
-      +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_fact?fmtD(p.fecha_fact):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
+      +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_fact?fmtD(p.fecha_fact):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right" min="0"></td>'
-      +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_pago?fmtD(p.fecha_pago):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
+      +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_pago?fmtD(p.fecha_pago):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
       +'<td style="padding:6px 10px;text-align:center">'+estadoBadge+'</td>'
       +'<td style="padding:6px 4px"><button class="btn btn-sm btn-d" data-mod="'+mod+'" data-idx="'+i+'" onclick="parcDel(this)"><i class="ti ti-trash"></i></button></td>'
       +'</tr>';
@@ -2608,37 +2608,47 @@ function rFacturacion(mod){
     +'<div class="kpi" style="--kc:'+(pendiente>0?'var(--red)':'var(--green)')+'"><div class="kpi-l">Por cobrar c/IVA</div><div class="kpi-v" style="color:'+(pendiente>0?'var(--red)':'var(--green)')+'">'+fmt(pendiente)+'</div></div>';
 }
 
+function parcFechaMask(el){
+  // Auto-agrega / mientras escribe: DD/MM/AAAA
+  var v=el.value.replace(/[^0-9]/g,'');
+  var out='';
+  if(v.length>0) out+=v.slice(0,2);
+  if(v.length>=3) out+='/'+v.slice(2,4);
+  if(v.length>=5) out+='/'+v.slice(4,8);
+  el.value=out;
+}
+
 function parcFecha(el){
-  // Convierte DD/MM/AAAA a YYYY-MM-DD para guardar
   var v=el.value.trim();
-  if(!v){parcUpd(el);rFacturacion(el.dataset.mod);return;}
-  // Acepta DD/MM/AAAA o YYYY-MM-DD
-  var parts;
-  if(v.includes('/')){
-    parts=v.split('/');
-    if(parts.length!==3){el.style.borderColor='var(--red)';setTimeout(function(){el.style.borderColor='';},2000);return;}
-    var dd=parts[0],mm=parts[1],aaaa=parts[2];
-    if(aaaa.length!==4||parseInt(aaaa)<2000||parseInt(aaaa)>2099){
-      el.style.borderColor='var(--red)';setTimeout(function(){el.style.borderColor='';},2000);return;
-    }
-    // Store as YYYY-MM-DD internally
-    var isoDate=aaaa+'-'+mm.padStart(2,'0')+'-'+dd.padStart(2,'0');
-    var arr=el.dataset.mod==='sv'?_parcSV:_parcDict;
-    var idx=+el.dataset.idx;
-    if(arr[idx]) arr[idx][el.dataset.key]=isoDate;
-    el.value=dd.padStart(2,'0')+'/'+mm.padStart(2,'0')+'/'+aaaa;
-    el.style.borderColor='var(--green)';
-    setTimeout(function(){el.style.borderColor='';},1000);
-    rFacturacion(el.dataset.mod);
-  } else if(v.includes('-')&&v.length===10){
-    // Already YYYY-MM-DD format
-    var arr2=el.dataset.mod==='sv'?_parcSV:_parcDict;
-    var idx2=+el.dataset.idx;
-    if(arr2[idx2]) arr2[idx2][el.dataset.key]=v;
-    var ps=v.split('-');
-    el.value=ps[2]+'/'+ps[1]+'/'+ps[0];
-    rFacturacion(el.dataset.mod);
+  if(!v){
+    var arr0=el.dataset.mod==='sv'?_parcSV:_parcDict;
+    if(arr0[+el.dataset.idx]) arr0[+el.dataset.idx][el.dataset.key]='';
+    rFacturacion(el.dataset.mod);return;
   }
+  // Validar formato DD/MM/AAAA
+  var m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(!m){
+    el.style.borderColor='var(--red)';
+    el.title='Formato: DD/MM/AAAA';
+    setTimeout(function(){el.style.borderColor='';el.title='';},2000);
+    return;
+  }
+  var dd=m[1],mm=m[2],aaaa=m[3];
+  var yr=parseInt(aaaa);
+  if(yr<2000||yr>2099){
+    el.style.borderColor='var(--red)';
+    el.title='Año debe ser entre 2000 y 2099';
+    setTimeout(function(){el.style.borderColor='';el.title='';},2000);
+    return;
+  }
+  // Guardar como YYYY-MM-DD
+  var iso=aaaa+'-'+mm+'-'+dd;
+  var arr=el.dataset.mod==='sv'?_parcSV:_parcDict;
+  var idx=+el.dataset.idx;
+  if(arr[idx]) arr[idx][el.dataset.key]=iso;
+  el.style.borderColor='var(--green)';
+  setTimeout(function(){el.style.borderColor='';},800);
+  rFacturacion(el.dataset.mod);
 }
 
 function parcUpd(el){
