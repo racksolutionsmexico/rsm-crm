@@ -2584,15 +2584,27 @@ function rFacturacion(mod){
       +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.pct||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="pct" onchange="parcUpd(this);parcCalcMonto('+i+',&quot;'+mod+'&quot;)" placeholder="%" style="width:50px;text-align:right" min="0" max="100"></td>'
       +'<td style="padding:6px 10px;text-align:right"><span style="font-size:12px;font-weight:600">'+fmt(subtotalRow)+'</span></td>'
       +'<td style="padding:6px 10px;text-align:right;color:var(--text3);font-size:11px">'+fmt(ivaRow)+'</td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right;font-weight:700" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
+      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(totalRow||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_fact" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" step="0.01" placeholder="0.00" style="width:120px;text-align:right;font-weight:700;color:var(--blue)" min="0" title="Total con IVA — editable si el monto real difiere"></td>'
       +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_fact?fmtD(p.fecha_fact):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_fact" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
-      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" placeholder="0.00" style="width:110px;text-align:right" min="0"></td>'
+      +'<td style="padding:6px 10px;text-align:right"><input class="ci" type="number" value="'+(p.monto_pago||'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="monto_pago" onchange="parcUpd(this);rFacturacion(&quot;'+mod+'&quot;)" step="0.01" placeholder="0.00" style="width:120px;text-align:right;font-weight:700;color:var(--green)" min="0"></td>'
       +'<td style="padding:6px 10px"><input class="ci" type="text" value="'+(p.fecha_pago?fmtD(p.fecha_pago):'')+'" data-mod="'+mod+'" data-idx="'+i+'" data-key="fecha_pago" oninput="parcFechaMask(this)" onblur="parcFecha(this)" placeholder="DD/MM/AAAA" style="width:110px" maxlength="10"></td>'
       +'<td style="padding:6px 10px;text-align:center">'+estadoBadge+'</td>'
       +'<td style="padding:6px 4px"><button class="btn btn-sm btn-d" data-mod="'+mod+'" data-idx="'+i+'" onclick="parcDel(this)"><i class="ti ti-trash"></i></button></td>'
       +'</tr>';
   });
 
+  // Fila de totales
+  var totalFactNum=arr.reduce(function(a,p){return a+(+p.monto_fact||0);},0);
+  var totalPagoNum=arr.reduce(function(a,p){return a+(+p.monto_pago||0);},0);
+  html+='<tr style="background:var(--gray);font-weight:700;border-top:2px solid var(--border)">'
+    +'<td colspan="2" style="padding:8px 10px;font-size:12px;color:var(--text2)">TOTALES</td>'
+    +'<td style="padding:8px 10px;text-align:right;font-size:12px">'+fmt(arr.reduce(function(a,p){return a+(p.subtotal||0);},0))+'</td>'
+    +'<td style="padding:8px 10px;text-align:right;font-size:11px;color:var(--text3)">'+fmt(arr.reduce(function(a,p){return a+(p.iva||0);},0))+'</td>'
+    +'<td style="padding:8px 10px;text-align:right;font-size:12px;color:var(--blue)">'+fmt(totalFactNum)+'</td>'
+    +'<td colspan="2" style="padding:8px 10px;text-align:right;font-size:12px;color:var(--green)">'+fmt(totalPagoNum)+'</td>'
+    +'<td style="padding:8px 10px;text-align:right;font-size:12px;color:'+(totalFactNum-totalPagoNum>0?'var(--red)':'var(--green)')+'">'+fmt(totalFactNum-totalPagoNum)+' pendiente</td>'
+    +'<td colspan="2"></td>'
+    +'</tr>';
   html+='</tbody></table></div>';
   el.innerHTML=html;
 
