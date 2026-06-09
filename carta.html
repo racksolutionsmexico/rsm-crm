@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --azul:    #2B5BA8;
     --azul-os: #1F3864;
@@ -18,212 +17,78 @@
     --gris-tx: #6B7280;
     --negro:   #111827;
     --blanco:  #FFFFFF;
-    --sombra:  0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
     --sombra-h:0 4px 12px rgba(43,91,168,.15), 0 8px 32px rgba(43,91,168,.10);
   }
-
   html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--negro); background: var(--blanco); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    color: var(--negro);
-    background: var(--blanco);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--gris-b);
-    padding: 0 24px;
-    height: 64px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .nav-logo img { height: 36px; }
-  .nav-links { display: flex; gap: 8px; }
-  .nav-links a {
-    font-size: 13px; font-weight: 500; color: var(--gris-tx);
-    text-decoration: none; padding: 6px 14px; border-radius: 6px;
-    transition: all .2s;
-  }
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gris-b); padding: 0 28px; height: 72px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo img { height: 52px; display: block; }
+  .nav-links { display: flex; gap: 6px; align-items: center; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--gris-tx); text-decoration: none; padding: 7px 14px; border-radius: 7px; transition: all .2s; }
   .nav-links a:hover { color: var(--azul); background: var(--gris-f); }
-  .nav-cta {
-    background: var(--naranja) !important; color: var(--blanco) !important;
-    border-radius: 8px !important; font-weight: 600 !important;
-  }
+  .nav-cta { background: var(--naranja) !important; color: var(--blanco) !important; border-radius: 8px !important; font-weight: 600 !important; }
   .nav-cta:hover { background: #D94E1A !important; }
 
-  /* ── HERO ── */
-  .hero {
-    padding: 80px 24px 64px;
-    max-width: 900px; margin: 0 auto;
-    text-align: center;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--nar-cla); color: var(--naranja);
-    font-size: 12px; font-weight: 600; letter-spacing: .04em;
-    padding: 6px 14px; border-radius: 99px;
-    border: 1px solid rgba(240,90,34,.2);
-    margin-bottom: 28px; text-transform: uppercase;
-  }
-  .hero-badge::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--naranja); border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: .5; transform: scale(1.4); }
-  }
-  .hero h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 700; line-height: 1.15;
-    color: var(--azul-os);
-    margin-bottom: 20px;
-  }
+  /* HERO */
+  .hero { padding: 80px 24px 64px; max-width: 900px; margin: 0 auto; text-align: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--nar-cla); color: var(--naranja); font-size: 12px; font-weight: 600; letter-spacing: .04em; padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(240,90,34,.2); margin-bottom: 28px; text-transform: uppercase; }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--naranja); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)} }
+  .hero h1 { font-family: 'Inter', sans-serif; font-size: clamp(28px,5vw,48px); font-weight: 700; line-height: 1.15; color: var(--azul-os); margin-bottom: 20px; }
   .hero h1 span { color: var(--naranja); }
-  .hero p {
-    font-size: clamp(15px, 2vw, 18px);
-    color: var(--gris-tx); max-width: 620px;
-    margin: 0 auto 36px;
-  }
+  .hero p { font-size: clamp(15px,2vw,18px); color: var(--gris-tx); max-width: 620px; margin: 0 auto 36px; }
   .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn-pri {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--naranja); color: var(--blanco);
-    font-size: 15px; font-weight: 600;
-    padding: 13px 28px; border-radius: 10px;
-    text-decoration: none; transition: all .2s;
-    box-shadow: 0 2px 8px rgba(240,90,34,.3);
-  }
+  .btn-pri { display: inline-flex; align-items: center; gap: 8px; background: var(--naranja); color: var(--blanco); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all .2s; box-shadow: 0 2px 8px rgba(240,90,34,.3); }
   .btn-pri:hover { background: #D94E1A; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(240,90,34,.4); }
-  .btn-sec {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--blanco); color: var(--azul);
-    font-size: 15px; font-weight: 600;
-    padding: 13px 28px; border-radius: 10px;
-    text-decoration: none; border: 1.5px solid var(--azul);
-    transition: all .2s;
-  }
+  .btn-sec { display: inline-flex; align-items: center; gap: 8px; background: var(--blanco); color: var(--azul); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--azul); transition: all .2s; }
   .btn-sec:hover { background: var(--gris-f); transform: translateY(-1px); }
 
-  /* ── STATS ── */
-  .stats {
-    background: var(--azul-os);
-    padding: 40px 24px;
-  }
-  .stats-inner {
-    max-width: 840px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-    gap: 24px;
-  }
+  /* STATS */
+  .stats { background: var(--azul-os); padding: 40px 24px; }
+  .stats-inner { max-width: 840px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 24px; }
   .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Inter', sans-serif;
-    font-size: 36px; font-weight: 700; color: var(--naranja);
-    line-height: 1;
-  }
+  .stat-num { font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 700; color: var(--naranja); line-height: 1; }
   .stat-lbl { font-size: 13px; color: rgba(255,255,255,.65); margin-top: 6px; }
 
-  /* ── SECCIÓN ── */
+  /* SECCIÓN */
   section { padding: 72px 24px; }
   .section-inner { max-width: 900px; margin: 0 auto; }
-  .section-tag {
-    font-size: 11px; font-weight: 600; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--naranja);
-    margin-bottom: 10px;
-  }
-  .section-h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(22px, 3.5vw, 32px);
-    font-weight: 700; color: var(--azul-os);
-    margin-bottom: 14px;
-  }
-  .section-sub {
-    font-size: 16px; color: var(--gris-tx);
-    max-width: 580px; margin-bottom: 48px;
-  }
+  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--naranja); margin-bottom: 10px; }
+  .section-h2 { font-family: 'Inter', sans-serif; font-size: clamp(22px,3.5vw,32px); font-weight: 700; color: var(--azul-os); margin-bottom: 14px; }
+  .section-sub { font-size: 16px; color: var(--gris-tx); max-width: 580px; margin-bottom: 48px; }
 
-  /* ── NIVELES TABS ── */
+  /* TABS */
   .tabs { display: flex; gap: 4px; margin-bottom: 28px; flex-wrap: wrap; }
-  .tab-btn {
-    padding: 9px 20px; border-radius: 8px;
-    font-size: 14px; font-weight: 600;
-    border: 1.5px solid var(--gris-b);
-    background: var(--blanco); color: var(--gris-tx);
-    cursor: pointer; transition: all .2s;
-  }
+  .tab-btn { padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1.5px solid var(--gris-b); background: var(--blanco); color: var(--gris-tx); cursor: pointer; transition: all .2s; }
   .tab-btn:hover { border-color: var(--azul); color: var(--azul); }
-  .tab-btn.active {
-    background: var(--azul); color: var(--blanco);
-    border-color: var(--azul);
-    box-shadow: 0 2px 8px rgba(43,91,168,.25);
-  }
+  .tab-btn.active { background: var(--azul); color: var(--blanco); border-color: var(--azul); box-shadow: 0 2px 8px rgba(43,91,168,.25); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; animation: fadeIn .25s ease; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none} }
 
-  .nivel-card {
-    background: var(--gris-f); border-radius: 14px;
-    border: 1.5px solid var(--gris-b);
-    padding: 32px; display: grid;
-    grid-template-columns: 1fr 1fr; gap: 32px;
-  }
-  .nivel-header { grid-column: 1 / -1; }
-  .nivel-badge {
-    display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: .06em;
-    text-transform: uppercase; padding: 4px 12px; border-radius: 99px;
-    background: var(--azul); color: var(--blanco);
-    margin-bottom: 10px;
-  }
-  .nivel-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 22px; font-weight: 700; color: var(--azul-os);
-    margin-bottom: 8px;
-  }
+  /* NIVEL CARD */
+  .nivel-card { background: var(--gris-f); border-radius: 14px; border: 1.5px solid var(--gris-b); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .nivel-header { grid-column: 1/-1; }
+  .nivel-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 99px; background: var(--azul); color: var(--blanco); margin-bottom: 10px; }
+  .nivel-title { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: var(--azul-os); margin-bottom: 8px; }
   .nivel-desc { font-size: 14px; color: var(--gris-tx); line-height: 1.65; }
-  .nivel-list h4 {
-    font-size: 12px; font-weight: 600; letter-spacing: .05em;
-    text-transform: uppercase; color: var(--gris-tx);
-    margin-bottom: 14px;
-  }
+  .nivel-list h4 { font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--gris-tx); margin-bottom: 14px; }
   .nivel-list ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-  .nivel-list li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; color: var(--negro); line-height: 1.5;
-  }
-  .nivel-list li::before {
-    content: '✓'; color: var(--naranja);
-    font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px;
-  }
+  .nivel-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--negro); line-height: 1.5; }
+  .nivel-list li::before { content: '✓'; color: var(--naranja); font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
   .nivel-list li.no::before { content: '—'; color: var(--gris-b); }
   .nivel-list li.no { color: var(--gris-tx); }
-  .nivel-footer {
-    grid-column: 1 / -1;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px;
-    padding-top: 20px; border-top: 1px solid var(--gris-b);
-  }
-  .nivel-vigencia {
-    font-size: 13px; color: var(--gris-tx);
-  }
+  .nivel-footer { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; border-top: 1px solid var(--gris-b); }
+  .nivel-vigencia { font-size: 13px; color: var(--gris-tx); }
   .nivel-vigencia strong { color: var(--azul-os); }
 
-  /* ── COMPARATIVO ── */
+  /* COMPARATIVO */
   .comp-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--gris-b); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th {
-    background: var(--azul-os); color: var(--blanco);
-    padding: 13px 16px; font-weight: 600; text-align: left;
-  }
-  th:first-child { border-radius: 12px 0 0 0; }
-  th:last-child  { border-radius: 0 12px 0 0; }
+  th { background: var(--azul-os); color: var(--blanco); padding: 13px 16px; font-weight: 600; text-align: left; }
+  th:first-child { border-radius: 12px 0 0 0; } th:last-child { border-radius: 0 12px 0 0; }
   td { padding: 11px 16px; border-bottom: 1px solid var(--gris-b); }
   tr:last-child td { border-bottom: none; }
   tr:nth-child(even) td { background: var(--gris-f); }
@@ -232,148 +97,66 @@
   td.partial { color: var(--azul); font-size: 12px; text-align: center; }
   td.cat { font-weight: 600; color: var(--azul-os); background: var(--gris-f) !important; }
 
-  /* ── POR QUÉ RSM ── */
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-    gap: 16px;
-  }
-  .why-card {
-    background: var(--blanco); border-radius: 12px;
-    border: 1px solid var(--gris-b);
-    padding: 24px; transition: all .25s;
-  }
+  /* WHY */
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px; }
+  .why-card { background: var(--blanco); border-radius: 12px; border: 1px solid var(--gris-b); padding: 24px; transition: all .25s; }
   .why-card:hover { border-color: var(--azul); box-shadow: var(--sombra-h); transform: translateY(-2px); }
-  .why-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    background: var(--nar-cla); display: flex; align-items: center;
-    justify-content: center; font-size: 22px; margin-bottom: 14px;
-  }
+  .why-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--nar-cla); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
   .why-card h3 { font-size: 15px; font-weight: 600; color: var(--azul-os); margin-bottom: 7px; }
   .why-card p  { font-size: 13px; color: var(--gris-tx); line-height: 1.6; }
 
-  /* ── SECTORES ── */
-  .sectores {
-    background: var(--gris-f);
-    border-top: 1px solid var(--gris-b);
-    border-bottom: 1px solid var(--gris-b);
-  }
-  .sector-tags {
-    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px;
-  }
-  .sector-tag {
-    background: var(--blanco); border: 1px solid var(--gris-b);
-    color: var(--azul-os); font-size: 13px; font-weight: 500;
-    padding: 8px 16px; border-radius: 99px; transition: all .2s;
-  }
+  /* SECTORES */
+  .sectores { background: var(--gris-f); border-top: 1px solid var(--gris-b); border-bottom: 1px solid var(--gris-b); }
+  .sector-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .sector-tag { background: var(--blanco); border: 1px solid var(--gris-b); color: var(--azul-os); font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 99px; transition: all .2s; }
   .sector-tag:hover { border-color: var(--naranja); color: var(--naranja); }
 
-  /* ── NORMATIVA ── */
-  .norm-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-    gap: 12px; margin-top: 32px;
-  }
-  .norm-pill {
-    background: var(--blanco); border: 1px solid var(--gris-b);
-    border-radius: 10px; padding: 16px 18px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .norm-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--naranja); flex-shrink: 0;
-  }
+  /* NORMATIVA */
+  .norm-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 12px; margin-top: 32px; }
+  .norm-pill { background: var(--blanco); border: 1px solid var(--gris-b); border-radius: 10px; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+  .norm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--naranja); flex-shrink: 0; }
   .norm-pill span { font-size: 13px; font-weight: 600; color: var(--azul-os); }
   .norm-pill small { display: block; font-size: 11px; color: var(--gris-tx); margin-top: 2px; }
 
-  /* ── PROCESO ── */
-  .proceso-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
-    gap: 0; margin-top: 40px; position: relative;
-  }
-  .paso {
-    text-align: center; padding: 0 12px;
-    position: relative;
-  }
-  .paso:not(:last-child)::after {
-    content: ''; position: absolute;
-    top: 22px; right: -1px;
-    width: 2px; height: 44px;
-    background: var(--gris-b);
-  }
-  .paso-num {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--azul-os); color: var(--blanco);
-    font-family: 'Inter', sans-serif;
-    font-size: 16px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 12px;
-  }
+  /* PROCESO */
+  .proceso-steps { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 0; margin-top: 40px; position: relative; }
+  .paso { text-align: center; padding: 0 12px; position: relative; }
+  .paso:not(:last-child)::after { content: ''; position: absolute; top: 22px; right: -1px; width: 2px; height: 44px; background: var(--gris-b); }
+  .paso-num { width: 44px; height: 44px; border-radius: 50%; background: var(--azul-os); color: var(--blanco); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
   .paso h4 { font-size: 13px; font-weight: 600; color: var(--azul-os); margin-bottom: 5px; }
   .paso p  { font-size: 12px; color: var(--gris-tx); line-height: 1.5; }
 
-  /* ── CREDENCIALES ── */
-  .cred-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-    gap: 14px; margin-top: 32px;
-  }
-  .cred-card {
-    background: var(--azul-os); border-radius: 10px;
-    padding: 20px; text-align: center;
-  }
+  /* CREDENCIALES */
+  .cred-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 14px; margin-top: 32px; }
+  .cred-card { background: var(--azul-os); border-radius: 10px; padding: 20px; text-align: center; }
   .cred-card .c-icon { font-size: 28px; margin-bottom: 8px; }
   .cred-card h4 { font-size: 14px; font-weight: 700; color: var(--blanco); margin-bottom: 4px; }
-  .cred-card p  { font-size: 11px; color: rgba(255,255,255,.6); }
+  .cred-card p  { font-size: 11px; color: rgba(255,255,255,.6); line-height: 1.5; }
 
-  /* ── CTA FINAL ── */
-  .cta-final {
-    background: linear-gradient(135deg, var(--azul-os) 0%, #1a4080 100%);
-    padding: 72px 24px; text-align: center;
-  }
-  .cta-final h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(24px, 4vw, 38px); font-weight: 700;
-    color: var(--blanco); margin-bottom: 14px;
-  }
+  /* CTA FINAL */
+  .cta-final { background: linear-gradient(135deg, var(--azul-os) 0%, #1a4080 100%); padding: 72px 24px; text-align: center; }
+  .cta-final h2 { font-family: 'Inter', sans-serif; font-size: clamp(24px,4vw,38px); font-weight: 700; color: var(--blanco); margin-bottom: 14px; }
   .cta-final p { font-size: 16px; color: rgba(255,255,255,.7); margin-bottom: 36px; }
   .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn-wa {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: #25D366; color: var(--blanco);
-    font-size: 15px; font-weight: 700;
-    padding: 14px 28px; border-radius: 10px;
-    text-decoration: none; transition: all .2s;
-    box-shadow: 0 2px 12px rgba(37,211,102,.35);
-  }
+  .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: var(--blanco); font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: all .2s; box-shadow: 0 2px 12px rgba(37,211,102,.35); }
   .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-  .btn-mail {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,.12); color: var(--blanco);
-    font-size: 15px; font-weight: 600;
-    padding: 14px 28px; border-radius: 10px;
-    text-decoration: none; border: 1.5px solid rgba(255,255,255,.3);
-    transition: all .2s;
-  }
+  .btn-mail { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,.12); color: var(--blanco); font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid rgba(255,255,255,.3); transition: all .2s; }
   .btn-mail:hover { background: rgba(255,255,255,.2); }
 
-  /* ── FOOTER ── */
-  footer {
-    background: var(--negro); color: rgba(255,255,255,.5);
-    padding: 32px 24px; text-align: center; font-size: 13px;
-  }
+  /* FOOTER */
+  footer { background: var(--negro); color: rgba(255,255,255,.5); padding: 32px 24px; text-align: center; font-size: 13px; }
   footer a { color: var(--naranja); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* ── RESPONSIVE ── */
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
   @media (max-width: 640px) {
     .nivel-card { grid-template-columns: 1fr; gap: 20px; }
     .nav-links a:not(.nav-cta) { display: none; }
     .paso:not(:last-child)::after { display: none; }
   }
-
-  /* ── SCROLL REVEAL ── */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
@@ -397,9 +180,7 @@
   <h1>Sus racks son un activo crítico.<br><span>Nosotros los dictaminamos.</span></h1>
   <p>Inspeccionamos, evaluamos y dictaminamos sistemas de almacenamiento industrial con estándares internacionales — para que su operación sea segura, legal y continua.</p>
   <div class="hero-btns">
-    <a href="https://wa.me/5545992081?text=Hola%20Alejandro%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20de%20inspecci%C3%B3n%20de%20racks" class="btn-pri" target="_blank">
-      💬 Solicitar cotización por WhatsApp
-    </a>
+    <a href="https://wa.me/5545992081?text=Hola%20Alejandro%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20de%20inspecci%C3%B3n%20de%20racks" class="btn-pri" target="_blank">💬 Solicitar cotización por WhatsApp</a>
     <a href="#servicios" class="btn-sec">Ver servicios →</a>
   </div>
 </section>
@@ -407,22 +188,10 @@
 <!-- STATS -->
 <div class="stats">
   <div class="stats-inner">
-    <div class="stat">
-      <div class="stat-num">3</div>
-      <div class="stat-lbl">Niveles de servicio</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">4</div>
-      <div class="stat-lbl">Normativas aplicadas</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-lbl">Módulo por módulo</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">12</div>
-      <div class="stat-lbl">Meses de vigencia (N2/N3)</div>
-    </div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">Niveles de servicio</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-lbl">Normativas aplicadas</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Módulo por módulo</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">Meses de vigencia N2/N3</div></div>
   </div>
 </div>
 
@@ -432,28 +201,26 @@
     <div class="section-tag">Nuestros servicios</div>
     <h2 class="section-h2">Tres niveles de servicio, un solo estándar de calidad</h2>
     <p class="section-sub">Cada nivel está diseñado para adaptarse a las necesidades técnicas y operativas de su organización.</p>
-
     <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('n1')">Nivel 1 — Básico</button>
-      <button class="tab-btn" onclick="showTab('n2')">Nivel 2 — Intermedio</button>
-      <button class="tab-btn" onclick="showTab('n3')">Nivel 3 — Integral</button>
-      <button class="tab-btn" onclick="showTab('comp')">Comparativo</button>
+      <button class="tab-btn active" onclick="showTab('n1',this)">Nivel 1 — Básico</button>
+      <button class="tab-btn" onclick="showTab('n2',this)">Nivel 2 — Intermedio</button>
+      <button class="tab-btn" onclick="showTab('n3',this)">Nivel 3 — Integral</button>
+      <button class="tab-btn" onclick="showTab('comp',this)">Comparativo</button>
     </div>
 
-    <!-- NIVEL 1 -->
     <div class="tab-panel active" id="tab-n1">
       <div class="nivel-card">
         <div class="nivel-header">
           <span class="nivel-badge">Nivel 1</span>
           <div class="nivel-title">Reporte Técnico Básico de Inspección Visual</div>
-          <div class="nivel-desc">El primer paso para conocer el estado real de sus sistemas de almacenamiento. Identificamos condiciones inseguras, daños visibles y oportunidades de mejora mediante inspección visual directa.</div>
+          <div class="nivel-desc">El primer paso para conocer el estado real de sus sistemas de almacenamiento. Identificamos condiciones inseguras, daños visibles y oportunidades de mejora mediante inspección visual directa en campo.</div>
         </div>
         <div class="nivel-list">
           <h4>Incluye</h4>
           <ul>
             <li>Inspección visual completa del sistema</li>
             <li>Registro fotográfico de hallazgos</li>
-            <li>Clasificación de hallazgos CR / NC / OB / OK</li>
+            <li>Clasificación CR / NC / OB / OK</li>
             <li>Layout del almacén inspeccionado</li>
             <li>Recomendaciones técnicas básicas</li>
             <li>Soporte post-entrega 15 días</li>
@@ -475,19 +242,18 @@
       </div>
     </div>
 
-    <!-- NIVEL 2 -->
     <div class="tab-panel" id="tab-n2">
       <div class="nivel-card">
         <div class="nivel-header">
           <span class="nivel-badge">Nivel 2</span>
           <div class="nivel-title">Dictamen Técnico Intermedio</div>
-          <div class="nivel-desc">Evaluación técnica especializada con análisis de ingeniería estructural. Determina capacidades de carga, evalúa la operabilidad del sistema y emite un dictamen técnico formal con plena validez legal.</div>
+          <div class="nivel-desc">Evaluación técnica especializada con análisis de ingeniería estructural. Determina capacidades de carga, evalúa la operabilidad del sistema y emite un dictamen técnico formal respaldado con folio único y código QR de vigencia.</div>
         </div>
         <div class="nivel-list">
           <h4>Todo el Nivel 1, más</h4>
           <ul>
-            <li>Evaluación técnica especializada de componentes</li>
-            <li>Determinación de capacidades de carga seguras</li>
+            <li>Evaluación técnica especializada</li>
+            <li>Capacidades de carga seguras</li>
             <li>Dictamen técnico de operabilidad</li>
             <li>Matriz de riesgos completa</li>
             <li>Carta ejecutiva de conclusiones</li>
@@ -500,7 +266,7 @@
           <ul>
             <li>Auditorías HSE / EHS / Compliance</li>
             <li>Validación de condiciones operativas</li>
-            <li>Soporte ante inspecciones de STPS</li>
+            <li>Revisiones de seguridad industrial</li>
             <li>Decisiones de inversión en mantenimiento</li>
           </ul>
         </div>
@@ -511,13 +277,12 @@
       </div>
     </div>
 
-    <!-- NIVEL 3 -->
     <div class="tab-panel" id="tab-n3">
       <div class="nivel-card">
         <div class="nivel-header">
           <span class="nivel-badge">Nivel 3</span>
           <div class="nivel-title">Dictamen Técnico Integral</div>
-          <div class="nivel-desc">El expediente técnico completo de su sistema de almacenamiento. El nivel más completo de evaluación que ofrece RSM: inventario estructural, fichas técnicas, levantamiento dimensional, evaluación formal NOM-006-STPS-2023 y plan de regularización.</div>
+          <div class="nivel-desc">El expediente técnico completo de su sistema de almacenamiento. Inventario estructural, fichas técnicas, levantamiento dimensional, evaluación formal NOM-006-STPS-2023, información para placas de capacidad y plan de regularización — todo en un solo documento trazable.</div>
         </div>
         <div class="nivel-list">
           <h4>Todo el Nivel 2, más</h4>
@@ -534,9 +299,9 @@
         <div class="nivel-list">
           <h4>Ideal para</h4>
           <ul>
-            <li>Empresas Fortune 500 y multinacionales</li>
-            <li>Certificaciones corporativas y auditorías globales</li>
-            <li>Sistemas modificados o de múltiples proveedores</li>
+            <li>Empresas multinacionales y Fortune 500</li>
+            <li>Certificaciones corporativas globales</li>
+            <li>Sistemas modificados o multi-proveedor</li>
             <li>Regularización documental completa</li>
           </ul>
         </div>
@@ -547,22 +312,14 @@
       </div>
     </div>
 
-    <!-- COMPARATIVO -->
     <div class="tab-panel" id="tab-comp">
       <div class="comp-table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Concepto</th>
-              <th>Nivel 1</th>
-              <th>Nivel 2</th>
-              <th>Nivel 3</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Concepto</th><th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th></tr></thead>
           <tbody>
             <tr><td class="cat" colspan="4">Inspección y documentación base</td></tr>
             <tr><td>Inspección visual completa</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-            <tr><td>Registro fotográfico de hallazgos</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Registro fotográfico</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
             <tr><td>Layout del almacén</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
             <tr><td>Clasificación CR / NC / OB / OK</td><td class="partial">Básica</td><td class="yes">Avanzada</td><td class="yes">Avanzada</td></tr>
             <tr><td class="cat" colspan="4">Análisis técnico de ingeniería</td></tr>
@@ -580,6 +337,7 @@
             <tr><td class="cat" colspan="4">Condiciones comerciales</td></tr>
             <tr><td>Vigencia del documento</td><td>6 meses</td><td>12 meses</td><td>12 meses</td></tr>
             <tr><td>Soporte post-entrega</td><td>15 días</td><td>30 días</td><td>30 días</td></tr>
+            <tr><td>Dictamen con folio + QR de vigencia</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
           </tbody>
         </table>
       </div>
@@ -588,7 +346,7 @@
 </section>
 
 <!-- POR QUÉ RSM -->
-<section id="porque" style="background: var(--gris-f); border-top: 1px solid var(--gris-b);">
+<section id="porque" style="background:var(--gris-f);border-top:1px solid var(--gris-b)">
   <div class="section-inner reveal">
     <div class="section-tag">¿Por qué Racks Solutions México?</div>
     <h2 class="section-h2">Especialistas en sistemas de almacenamiento industrial</h2>
@@ -597,32 +355,32 @@
       <div class="why-card">
         <div class="why-icon">🏗️</div>
         <h3>Especialización exclusiva en racks</h3>
-        <p>Fabricamos, instalamos, inspeccionamos y dictaminamos sistemas de almacenamiento industrial. No hacemos otra cosa.</p>
+        <p>Fabricamos, instalamos, inspeccionamos y dictaminamos sistemas de almacenamiento industrial. Es todo lo que hacemos.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">📋</div>
         <h3>Estándares internacionales</h3>
-        <p>ANSI MH16.1, FEM 10.2.07 y NOM-006-STPS-2023. El mismo marco técnico que aplican los líderes globales de la industria.</p>
+        <p>ANSI MH16.1, FEM 10.2.07, RMI y NOM-006-STPS-2023. El mismo marco técnico que aplican los líderes globales de la industria.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">⚖️</div>
-        <h3>Validez legal plena</h3>
-        <p>Dictámenes emitidos por Ingenieros con cédula profesional. Respaldo legal ante cualquier auditoría, inspección de STPS o evento.</p>
+        <div class="why-icon">📲</div>
+        <h3>Dictámenes con QR de vigencia</h3>
+        <p>Folio único, código QR de vigencia y firma de Ingeniero con cédula profesional en cada dictamen. Escanee el QR y verifique al instante la autenticidad del documento, el nombre del emisor y su fecha de vencimiento — desde cualquier dispositivo, en cualquier momento.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📄</div>
+        <h3>Documentación técnica formal</h3>
+        <p>Dictámenes emitidos con folio único, código QR de vigencia y firmados por Ingeniero con cédula profesional. Un documento técnico que su organización puede presentar con total confianza ante auditorías, clientes o programas de cumplimiento.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">🔍</div>
         <h3>Inspección con sistema cargado</h3>
-        <p>Inspeccionamos con los racks en operación. Así vemos el comportamiento real del sistema bajo carga — no una foto en condición ideal.</p>
+        <p>Inspeccionamos con los racks en operación. Así observamos el comportamiento real del sistema bajo carga — no una fotografía en condición ideal.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">📄</div>
+        <div class="why-icon">⚙️</div>
         <h3>Sin interrumpir su operación</h3>
         <p>Trabajamos alrededor de su operación normal. Sin detener producción, sin mover mercancía, sin paros no programados.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🛡️</div>
-        <h3>REPSE y DC3 vigentes</h3>
-        <p>Personal registrado ante IMSS, constancia REPSE y certificación DC3 para trabajos en altura. Cumplimiento total desde el primer día.</p>
       </div>
     </div>
   </div>
@@ -654,72 +412,44 @@
   <div class="section-inner reveal">
     <div class="section-tag">Marco normativo</div>
     <h2 class="section-h2">Evaluamos con las normas correctas</h2>
-    <p class="section-sub">No hay atajos. Cada dictamen se emite conforme a las normativas específicas para sistemas de almacenamiento industrial.</p>
+    <p class="section-sub">Cada dictamen se emite conforme a las normativas específicas para sistemas de almacenamiento industrial en México y a nivel internacional.</p>
     <div class="norm-grid">
       <div class="norm-pill">
         <div class="norm-dot"></div>
-        <div>
-          <span>NOM-006-STPS-2023</span>
-          <small>Almacenamiento y manejo de materiales — México</small>
-        </div>
+        <div><span>NOM-006-STPS-2023</span><small>Almacenamiento y manejo de materiales — México</small></div>
       </div>
       <div class="norm-pill">
         <div class="norm-dot"></div>
-        <div>
-          <span>ANSI MH16.1 (2012)</span>
-          <small>Industrial Steel Storage Racks — EUA</small>
-        </div>
+        <div><span>ANSI MH16.1 (2012)</span><small>Industrial Steel Storage Racks — EUA</small></div>
       </div>
       <div class="norm-pill">
         <div class="norm-dot"></div>
-        <div>
-          <span>FEM 10.2.07</span>
-          <small>European Racking Federation — Europa</small>
-        </div>
+        <div><span>FEM 10.2.07</span><small>European Racking Federation — Europa</small></div>
       </div>
       <div class="norm-pill">
         <div class="norm-dot"></div>
-        <div>
-          <span>NOM-017-STPS-2024</span>
-          <small>Equipo de protección personal — México</small>
-        </div>
+        <div><span>RMI</span><small>Rack Manufacturers Institute — Especificaciones técnicas de fabricación e instalación</small></div>
+      </div>
+      <div class="norm-pill">
+        <div class="norm-dot"></div>
+        <div><span>NOM-017-STPS-2024</span><small>Equipo de protección personal — México</small></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROCESO -->
-<section style="background: var(--gris-f); border-top: 1px solid var(--gris-b);" id="proceso">
+<section style="background:var(--gris-f);border-top:1px solid var(--gris-b)" id="proceso">
   <div class="section-inner reveal">
     <div class="section-tag">Cómo trabajamos</div>
     <h2 class="section-h2">Cinco fases, un resultado claro</h2>
     <p class="section-sub">De la cotización al dictamen entregado, con trazabilidad total en cada paso.</p>
     <div class="proceso-steps">
-      <div class="paso">
-        <div class="paso-num">1</div>
-        <h4>Cotización</h4>
-        <p>Evaluamos el sistema y definimos el alcance en 24 horas</p>
-      </div>
-      <div class="paso">
-        <div class="paso-num">2</div>
-        <h4>Planeación</h4>
-        <p>Coordinamos acceso, fechas y protocolos de seguridad</p>
-      </div>
-      <div class="paso">
-        <div class="paso-num">3</div>
-        <h4>Inspección en campo</h4>
-        <p>Levantamiento técnico módulo por módulo con el sistema cargado</p>
-      </div>
-      <div class="paso">
-        <div class="paso-num">4</div>
-        <h4>Análisis técnico</h4>
-        <p>Procesamiento de hallazgos, ingeniería y clasificación de riesgos</p>
-      </div>
-      <div class="paso">
-        <div class="paso-num">5</div>
-        <h4>Entrega del dictamen</h4>
-        <p>Documento técnico formal listo para auditorías y cumplimiento</p>
-      </div>
+      <div class="paso"><div class="paso-num">1</div><h4>Cotización</h4><p>Evaluamos el sistema y definimos el alcance en 24 horas</p></div>
+      <div class="paso"><div class="paso-num">2</div><h4>Planeación</h4><p>Coordinamos acceso, fechas y protocolos de seguridad</p></div>
+      <div class="paso"><div class="paso-num">3</div><h4>Inspección en campo</h4><p>Levantamiento técnico módulo por módulo con el sistema cargado</p></div>
+      <div class="paso"><div class="paso-num">4</div><h4>Análisis técnico</h4><p>Ingeniería, clasificación de riesgos y elaboración del dictamen</p></div>
+      <div class="paso"><div class="paso-num">5</div><h4>Entrega</h4><p>Dictamen formal con folio, QR de vigencia y firma profesional</p></div>
     </div>
   </div>
 </section>
@@ -734,7 +464,7 @@
       <div class="cred-card">
         <div class="c-icon">📜</div>
         <h4>Constancia REPSE</h4>
-        <p>Registro de prestadores de servicios especializados vigente</p>
+        <p>Registro de prestadores de servicios especializados vigente ante la STPS</p>
       </div>
       <div class="cred-card">
         <div class="c-icon">🎓</div>
@@ -742,14 +472,14 @@
         <p>Personal certificado para trabajos en altura y espacios confinados</p>
       </div>
       <div class="cred-card">
-        <div class="c-icon">🏛️</div>
-        <h4>Cédula profesional</h4>
-        <p>Dictámenes firmados por Ingeniero con cédula federal registrada</p>
+        <div class="c-icon">📲</div>
+        <h4>Folio + QR de vigencia</h4>
+        <p>Cada dictamen lleva folio único y código QR verificable desde cualquier dispositivo</p>
       </div>
       <div class="cred-card">
         <div class="c-icon">🔒</div>
-        <h4>Confidencialidad</h4>
-        <p>Toda la información técnica es de uso exclusivo del cliente</p>
+        <h4>Confidencialidad total</h4>
+        <p>Toda la información técnica es de uso exclusivo del cliente. Compromiso vigente incluso tras la entrega.</p>
       </div>
     </div>
   </div>
@@ -760,34 +490,24 @@
   <h2>¿Sus racks están dictaminados?</h2>
   <p>Un sistema sin dictamen vigente es un riesgo operativo, legal y humano. Hablemos hoy.</p>
   <div class="cta-btns">
-    <a href="https://wa.me/5545992081?text=Hola%20Alejandro%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20de%20inspecci%C3%B3n%20de%20racks" class="btn-wa" target="_blank">
-      💬 WhatsApp — Alejandro Abadía
-    </a>
-    <a href="mailto:abadia@racksm.com.mx?subject=Solicitud%20de%20cotizaci%C3%B3n%20%E2%80%94%20Inspecci%C3%B3n%20de%20racks" class="btn-mail">
-      ✉️ abadia@racksm.com.mx
-    </a>
+    <a href="https://wa.me/5545992081?text=Hola%20Alejandro%2C%20me%20interesa%20una%20cotizaci%C3%B3n%20de%20inspecci%C3%B3n%20de%20racks" class="btn-wa" target="_blank">💬 WhatsApp — Alejandro Abadía</a>
+    <a href="mailto:abadia@racksm.com.mx?subject=Solicitud%20de%20cotizaci%C3%B3n%20%E2%80%94%20Inspecci%C3%B3n%20de%20racks" class="btn-mail">✉️ abadia@racksm.com.mx</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>
-    <strong style="color:#fff">Racks Solutions México</strong> &nbsp;|&nbsp;
-    RACKS Y SOLUCIONES DE ENTREGA S.A. DE C.V. &nbsp;|&nbsp;
-    <a href="tel:+525545992081">55 4599 2081</a> &nbsp;|&nbsp;
-    <a href="https://racksm.com.mx" target="_blank">racksm.com.mx</a>
-  </p>
+  <p><strong style="color:#fff">Racks Solutions México</strong> &nbsp;|&nbsp; RACKS Y SOLUCIONES DE ENTREGA S.A. DE C.V. &nbsp;|&nbsp; <a href="tel:+525545992081">55 4599 2081</a> &nbsp;|&nbsp; <a href="https://racksm.com.mx" target="_blank">racksm.com.mx</a></p>
   <p style="margin-top:8px">Estado de México, México &nbsp;·&nbsp; © 2026 Racks Solutions México. Todos los derechos reservados.</p>
 </footer>
 
 <script>
-function showTab(id) {
+function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
 }
-
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
