@@ -17,7 +17,7 @@
     --gris-tx: #6B7280;
     --negro:   #111827;
     --blanco:  #FFFFFF;
-    --sombra-h:0 4px 12px rgba(43,91,168,.15), 0 8px 32px rgba(43,91,168,.10);
+    --sombra-h:0 4px 12px rgba(43,91,168,.15),0 8px 32px rgba(43,91,168,.10);
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; color: var(--negro); background: var(--blanco); line-height: 1.6; -webkit-font-smoothing: antialiased; }
@@ -34,128 +34,128 @@
   /* HERO */
   .hero { padding: 80px 24px 64px; max-width: 900px; margin: 0 auto; text-align: center; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--nar-cla); color: var(--naranja); font-size: 12px; font-weight: 600; letter-spacing: .04em; padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(240,90,34,.2); margin-bottom: 28px; text-transform: uppercase; }
-  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--naranja); border-radius: 50%; animation: pulse 2s infinite; }
+  .hero-badge::before { content:''; width:6px; height:6px; background:var(--naranja); border-radius:50%; animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)} }
-  .hero h1 { font-family: 'Inter', sans-serif; font-size: clamp(28px,5vw,48px); font-weight: 700; line-height: 1.15; color: var(--azul-os); margin-bottom: 20px; }
-  .hero h1 span { color: var(--naranja); }
-  .hero p { font-size: clamp(15px,2vw,18px); color: var(--gris-tx); max-width: 620px; margin: 0 auto 36px; }
-  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn-pri { display: inline-flex; align-items: center; gap: 8px; background: var(--naranja); color: var(--blanco); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; transition: all .2s; box-shadow: 0 2px 8px rgba(240,90,34,.3); }
-  .btn-pri:hover { background: #D94E1A; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(240,90,34,.4); }
-  .btn-sec { display: inline-flex; align-items: center; gap: 8px; background: var(--blanco); color: var(--azul); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid var(--azul); transition: all .2s; }
-  .btn-sec:hover { background: var(--gris-f); transform: translateY(-1px); }
+  .hero h1 { font-family:'Inter',sans-serif; font-size:clamp(28px,5vw,48px); font-weight:700; line-height:1.15; color:var(--azul-os); margin-bottom:20px; }
+  .hero h1 span { color:var(--naranja); }
+  .hero p { font-size:clamp(15px,2vw,18px); color:var(--gris-tx); max-width:620px; margin:0 auto 36px; }
+  .hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn-pri { display:inline-flex; align-items:center; gap:8px; background:var(--naranja); color:var(--blanco); font-size:15px; font-weight:600; padding:13px 28px; border-radius:10px; text-decoration:none; transition:all .2s; box-shadow:0 2px 8px rgba(240,90,34,.3); }
+  .btn-pri:hover { background:#D94E1A; transform:translateY(-1px); }
+  .btn-sec { display:inline-flex; align-items:center; gap:8px; background:var(--blanco); color:var(--azul); font-size:15px; font-weight:600; padding:13px 28px; border-radius:10px; text-decoration:none; border:1.5px solid var(--azul); transition:all .2s; }
+  .btn-sec:hover { background:var(--gris-f); transform:translateY(-1px); }
 
   /* STATS */
-  .stats { background: var(--azul-os); padding: 40px 24px; }
-  .stats-inner { max-width: 840px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 24px; }
-  .stat { text-align: center; }
-  .stat-num { font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 700; color: var(--naranja); line-height: 1; }
-  .stat-lbl { font-size: 13px; color: rgba(255,255,255,.65); margin-top: 6px; }
+  .stats { background:var(--azul-os); padding:40px 24px; }
+  .stats-inner { max-width:840px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:24px; }
+  .stat { text-align:center; }
+  .stat-num { font-family:'Inter',sans-serif; font-size:36px; font-weight:700; color:var(--naranja); line-height:1; }
+  .stat-lbl { font-size:13px; color:rgba(255,255,255,.65); margin-top:6px; }
 
   /* SECCIÓN */
-  section { padding: 72px 24px; }
-  .section-inner { max-width: 900px; margin: 0 auto; }
-  .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--naranja); margin-bottom: 10px; }
-  .section-h2 { font-family: 'Inter', sans-serif; font-size: clamp(22px,3.5vw,32px); font-weight: 700; color: var(--azul-os); margin-bottom: 14px; }
-  .section-sub { font-size: 16px; color: var(--gris-tx); max-width: 580px; margin-bottom: 48px; }
+  section { padding:72px 24px; }
+  .section-inner { max-width:900px; margin:0 auto; }
+  .section-tag { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--naranja); margin-bottom:10px; }
+  .section-h2 { font-family:'Inter',sans-serif; font-size:clamp(22px,3.5vw,32px); font-weight:700; color:var(--azul-os); margin-bottom:14px; }
+  .section-sub { font-size:16px; color:var(--gris-tx); max-width:580px; margin-bottom:48px; }
 
   /* TABS */
-  .tabs { display: flex; gap: 4px; margin-bottom: 28px; flex-wrap: wrap; }
-  .tab-btn { padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1.5px solid var(--gris-b); background: var(--blanco); color: var(--gris-tx); cursor: pointer; transition: all .2s; }
-  .tab-btn:hover { border-color: var(--azul); color: var(--azul); }
-  .tab-btn.active { background: var(--azul); color: var(--blanco); border-color: var(--azul); box-shadow: 0 2px 8px rgba(43,91,168,.25); }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+  .tabs { display:flex; gap:4px; margin-bottom:28px; flex-wrap:wrap; }
+  .tab-btn { padding:9px 20px; border-radius:8px; font-size:14px; font-weight:600; border:1.5px solid var(--gris-b); background:var(--blanco); color:var(--gris-tx); cursor:pointer; transition:all .2s; }
+  .tab-btn:hover { border-color:var(--azul); color:var(--azul); }
+  .tab-btn.active { background:var(--azul); color:var(--blanco); border-color:var(--azul); box-shadow:0 2px 8px rgba(43,91,168,.25); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; animation:fadeIn .25s ease; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none} }
 
   /* NIVEL CARD */
-  .nivel-card { background: var(--gris-f); border-radius: 14px; border: 1.5px solid var(--gris-b); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .nivel-header { grid-column: 1/-1; }
-  .nivel-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 99px; background: var(--azul); color: var(--blanco); margin-bottom: 10px; }
-  .nivel-title { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: var(--azul-os); margin-bottom: 8px; }
-  .nivel-desc { font-size: 14px; color: var(--gris-tx); line-height: 1.65; }
-  .nivel-list h4 { font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--gris-tx); margin-bottom: 14px; }
-  .nivel-list ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-  .nivel-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--negro); line-height: 1.5; }
-  .nivel-list li::before { content: '✓'; color: var(--naranja); font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
-  .nivel-list li.no::before { content: '—'; color: var(--gris-b); }
-  .nivel-list li.no { color: var(--gris-tx); }
-  .nivel-footer { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; border-top: 1px solid var(--gris-b); }
-  .nivel-vigencia { font-size: 13px; color: var(--gris-tx); }
-  .nivel-vigencia strong { color: var(--azul-os); }
+  .nivel-card { background:var(--gris-f); border-radius:14px; border:1.5px solid var(--gris-b); padding:32px; display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .nivel-header { grid-column:1/-1; }
+  .nivel-badge { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:4px 12px; border-radius:99px; background:var(--azul); color:var(--blanco); margin-bottom:10px; }
+  .nivel-title { font-family:'Inter',sans-serif; font-size:22px; font-weight:700; color:var(--azul-os); margin-bottom:8px; }
+  .nivel-desc { font-size:14px; color:var(--gris-tx); line-height:1.65; }
+  .nivel-list h4 { font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--gris-tx); margin-bottom:14px; }
+  .nivel-list ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .nivel-list li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--negro); line-height:1.5; }
+  .nivel-list li::before { content:'✓'; color:var(--naranja); font-weight:700; font-size:13px; flex-shrink:0; margin-top:2px; }
+  .nivel-list li.no::before { content:'—'; color:var(--gris-b); }
+  .nivel-list li.no { color:var(--gris-tx); }
+  .nivel-footer { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:20px; border-top:1px solid var(--gris-b); }
+  .nivel-vigencia { font-size:13px; color:var(--gris-tx); }
+  .nivel-vigencia strong { color:var(--azul-os); }
 
   /* COMPARATIVO */
-  .comp-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--gris-b); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: var(--azul-os); color: var(--blanco); padding: 13px 16px; font-weight: 600; text-align: left; }
-  th:first-child { border-radius: 12px 0 0 0; } th:last-child { border-radius: 0 12px 0 0; }
-  td { padding: 11px 16px; border-bottom: 1px solid var(--gris-b); }
-  tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: var(--gris-f); }
-  td.yes { color: #16A34A; font-weight: 600; text-align: center; }
-  td.no  { color: #D1D5DB; text-align: center; }
-  td.partial { color: var(--azul); font-size: 12px; text-align: center; }
-  td.cat { font-weight: 600; color: var(--azul-os); background: var(--gris-f) !important; }
+  .comp-table-wrap { overflow-x:auto; border-radius:12px; border:1px solid var(--gris-b); }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:var(--azul-os); color:var(--blanco); padding:13px 16px; font-weight:600; text-align:left; }
+  th:first-child { border-radius:12px 0 0 0; } th:last-child { border-radius:0 12px 0 0; }
+  td { padding:11px 16px; border-bottom:1px solid var(--gris-b); }
+  tr:last-child td { border-bottom:none; }
+  tr:nth-child(even) td { background:var(--gris-f); }
+  td.yes { color:#16A34A; font-weight:600; text-align:center; }
+  td.no  { color:#D1D5DB; text-align:center; }
+  td.partial { color:var(--azul); font-size:12px; text-align:center; }
+  td.cat { font-weight:600; color:var(--azul-os); background:var(--gris-f) !important; }
 
   /* WHY */
-  .why-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px; }
-  .why-card { background: var(--blanco); border-radius: 12px; border: 1px solid var(--gris-b); padding: 24px; transition: all .25s; }
-  .why-card:hover { border-color: var(--azul); box-shadow: var(--sombra-h); transform: translateY(-2px); }
-  .why-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--nar-cla); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
-  .why-card h3 { font-size: 15px; font-weight: 600; color: var(--azul-os); margin-bottom: 7px; }
-  .why-card p  { font-size: 13px; color: var(--gris-tx); line-height: 1.6; }
+  .why-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .why-card { background:var(--blanco); border-radius:12px; border:1px solid var(--gris-b); padding:24px; transition:all .25s; }
+  .why-card:hover { border-color:var(--azul); box-shadow:var(--sombra-h); transform:translateY(-2px); }
+  .why-icon { width:44px; height:44px; border-radius:10px; background:var(--nar-cla); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; }
+  .why-card h3 { font-size:15px; font-weight:600; color:var(--azul-os); margin-bottom:7px; }
+  .why-card p  { font-size:13px; color:var(--gris-tx); line-height:1.6; }
 
   /* SECTORES */
-  .sectores { background: var(--gris-f); border-top: 1px solid var(--gris-b); border-bottom: 1px solid var(--gris-b); }
-  .sector-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
-  .sector-tag { background: var(--blanco); border: 1px solid var(--gris-b); color: var(--azul-os); font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 99px; transition: all .2s; }
-  .sector-tag:hover { border-color: var(--naranja); color: var(--naranja); }
+  .sectores { background:var(--gris-f); border-top:1px solid var(--gris-b); border-bottom:1px solid var(--gris-b); }
+  .sector-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:32px; }
+  .sector-tag { background:var(--blanco); border:1px solid var(--gris-b); color:var(--azul-os); font-size:13px; font-weight:500; padding:8px 16px; border-radius:99px; transition:all .2s; }
+  .sector-tag:hover { border-color:var(--naranja); color:var(--naranja); }
 
   /* NORMATIVA */
-  .norm-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 12px; margin-top: 32px; }
-  .norm-pill { background: var(--blanco); border: 1px solid var(--gris-b); border-radius: 10px; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
-  .norm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--naranja); flex-shrink: 0; }
-  .norm-pill span { font-size: 13px; font-weight: 600; color: var(--azul-os); }
-  .norm-pill small { display: block; font-size: 11px; color: var(--gris-tx); margin-top: 2px; }
+  .norm-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:32px; }
+  .norm-pill { background:var(--blanco); border:1px solid var(--gris-b); border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:12px; }
+  .norm-dot { width:8px; height:8px; border-radius:50%; background:var(--naranja); flex-shrink:0; }
+  .norm-pill span { font-size:13px; font-weight:600; color:var(--azul-os); }
+  .norm-pill small { display:block; font-size:11px; color:var(--gris-tx); margin-top:2px; }
 
   /* PROCESO */
-  .proceso-steps { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 0; margin-top: 40px; position: relative; }
-  .paso { text-align: center; padding: 0 12px; position: relative; }
-  .paso:not(:last-child)::after { content: ''; position: absolute; top: 22px; right: -1px; width: 2px; height: 44px; background: var(--gris-b); }
-  .paso-num { width: 44px; height: 44px; border-radius: 50%; background: var(--azul-os); color: var(--blanco); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-  .paso h4 { font-size: 13px; font-weight: 600; color: var(--azul-os); margin-bottom: 5px; }
-  .paso p  { font-size: 12px; color: var(--gris-tx); line-height: 1.5; }
+  .proceso-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:0; margin-top:40px; }
+  .paso { text-align:center; padding:0 12px; position:relative; }
+  .paso:not(:last-child)::after { content:''; position:absolute; top:22px; right:-1px; width:2px; height:44px; background:var(--gris-b); }
+  .paso-num { width:44px; height:44px; border-radius:50%; background:var(--azul-os); color:var(--blanco); font-family:'Inter',sans-serif; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+  .paso h4 { font-size:13px; font-weight:600; color:var(--azul-os); margin-bottom:5px; }
+  .paso p  { font-size:12px; color:var(--gris-tx); line-height:1.5; }
 
   /* CREDENCIALES */
-  .cred-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 14px; margin-top: 32px; }
-  .cred-card { background: var(--azul-os); border-radius: 10px; padding: 20px; text-align: center; }
-  .cred-card .c-icon { font-size: 28px; margin-bottom: 8px; }
-  .cred-card h4 { font-size: 14px; font-weight: 700; color: var(--blanco); margin-bottom: 4px; }
-  .cred-card p  { font-size: 11px; color: rgba(255,255,255,.6); line-height: 1.5; }
+  .cred-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-top:32px; }
+  .cred-card { background:var(--azul-os); border-radius:10px; padding:20px; text-align:center; }
+  .cred-card .c-icon { font-size:28px; margin-bottom:8px; }
+  .cred-card h4 { font-size:14px; font-weight:700; color:var(--blanco); margin-bottom:4px; }
+  .cred-card p  { font-size:11px; color:rgba(255,255,255,.6); line-height:1.5; }
 
   /* CTA FINAL */
-  .cta-final { background: linear-gradient(135deg, var(--azul-os) 0%, #1a4080 100%); padding: 72px 24px; text-align: center; }
-  .cta-final h2 { font-family: 'Inter', sans-serif; font-size: clamp(24px,4vw,38px); font-weight: 700; color: var(--blanco); margin-bottom: 14px; }
-  .cta-final p { font-size: 16px; color: rgba(255,255,255,.7); margin-bottom: 36px; }
-  .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: var(--blanco); font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: all .2s; box-shadow: 0 2px 12px rgba(37,211,102,.35); }
-  .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-  .btn-mail { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,.12); color: var(--blanco); font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid rgba(255,255,255,.3); transition: all .2s; }
-  .btn-mail:hover { background: rgba(255,255,255,.2); }
+  .cta-final { background:linear-gradient(135deg,var(--azul-os) 0%,#1a4080 100%); padding:72px 24px; text-align:center; }
+  .cta-final h2 { font-family:'Inter',sans-serif; font-size:clamp(24px,4vw,38px); font-weight:700; color:var(--blanco); margin-bottom:14px; }
+  .cta-final p { font-size:16px; color:rgba(255,255,255,.7); margin-bottom:36px; }
+  .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .btn-wa { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:var(--blanco); font-size:15px; font-weight:700; padding:14px 28px; border-radius:10px; text-decoration:none; transition:all .2s; box-shadow:0 2px 12px rgba(37,211,102,.35); }
+  .btn-wa:hover { background:#1ebe5d; transform:translateY(-1px); }
+  .btn-mail { display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,.12); color:var(--blanco); font-size:15px; font-weight:600; padding:14px 28px; border-radius:10px; text-decoration:none; border:1.5px solid rgba(255,255,255,.3); transition:all .2s; }
+  .btn-mail:hover { background:rgba(255,255,255,.2); }
 
   /* FOOTER */
-  footer { background: var(--negro); color: rgba(255,255,255,.5); padding: 32px 24px; text-align: center; font-size: 13px; }
-  footer a { color: var(--naranja); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
+  footer { background:var(--negro); color:rgba(255,255,255,.5); padding:32px 24px; text-align:center; font-size:13px; }
+  footer a { color:var(--naranja); text-decoration:none; }
+  footer a:hover { text-decoration:underline; }
 
-  /* SCROLL REVEAL */
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
+  /* REVEAL */
+  .reveal { opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
+  .reveal.visible { opacity:1; transform:none; }
 
-  @media (max-width: 640px) {
-    .nivel-card { grid-template-columns: 1fr; gap: 20px; }
-    .nav-links a:not(.nav-cta) { display: none; }
-    .paso:not(:last-child)::after { display: none; }
+  @media (max-width:640px) {
+    .nivel-card { grid-template-columns:1fr; gap:20px; }
+    .nav-links a:not(.nav-cta) { display:none; }
+    .paso:not(:last-child)::after { display:none; }
   }
 </style>
 </head>
@@ -237,7 +237,7 @@
         </div>
         <div class="nivel-footer">
           <div class="nivel-vigencia">Vigencia del reporte: <strong>6 meses</strong></div>
-          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20el%20Nivel%201%20de%20inspecci%C3%B3n" class="btn-pri" target="_blank">Cotizar Nivel 1</a>
+          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20cotizar%20el%20Nivel%201%20de%20inspecci%C3%B3n%20de%20racks" class="btn-pri" target="_blank">Cotizar Nivel 1</a>
         </div>
       </div>
     </div>
@@ -272,7 +272,7 @@
         </div>
         <div class="nivel-footer">
           <div class="nivel-vigencia">Vigencia del dictamen: <strong>12 meses</strong></div>
-          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20el%20Nivel%202%20de%20inspecci%C3%B3n" class="btn-pri" target="_blank">Cotizar Nivel 2</a>
+          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20cotizar%20el%20Nivel%202%20de%20inspecci%C3%B3n%20de%20racks" class="btn-pri" target="_blank">Cotizar Nivel 2</a>
         </div>
       </div>
     </div>
@@ -282,7 +282,7 @@
         <div class="nivel-header">
           <span class="nivel-badge">Nivel 3</span>
           <div class="nivel-title">Dictamen Técnico Integral</div>
-          <div class="nivel-desc">El expediente técnico completo de su sistema de almacenamiento. Inventario estructural, fichas técnicas, levantamiento dimensional, evaluación formal NOM-006-STPS-2023, información para placas de capacidad y plan de regularización — todo en un solo documento trazable.</div>
+          <div class="nivel-desc">El expediente técnico completo de su sistema de almacenamiento. Inventario estructural, fichas técnicas, levantamiento dimensional, evaluación formal NOM-006-STPS-2023, información para placas de capacidad y plan de regularización.</div>
         </div>
         <div class="nivel-list">
           <h4>Todo el Nivel 2, más</h4>
@@ -307,7 +307,7 @@
         </div>
         <div class="nivel-footer">
           <div class="nivel-vigencia">Vigencia del dictamen: <strong>12 meses</strong></div>
-          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20el%20Nivel%203%20de%20inspecci%C3%B3n" class="btn-pri" target="_blank">Cotizar Nivel 3</a>
+          <a href="https://wa.me/5545992081?text=Hola%2C%20me%20interesa%20cotizar%20el%20Nivel%203%20de%20inspecci%C3%B3n%20de%20racks" class="btn-pri" target="_blank">Cotizar Nivel 3</a>
         </div>
       </div>
     </div>
@@ -352,36 +352,12 @@
     <h2 class="section-h2">Especialistas en sistemas de almacenamiento industrial</h2>
     <p class="section-sub">No somos una empresa genérica de seguridad industrial — somos especialistas exclusivos en racks.</p>
     <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon">🏗️</div>
-        <h3>Especialización exclusiva en racks</h3>
-        <p>Fabricamos, instalamos, inspeccionamos y dictaminamos sistemas de almacenamiento industrial. Es todo lo que hacemos.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">📋</div>
-        <h3>Estándares internacionales</h3>
-        <p>ANSI MH16.1, FEM 10.2.07, RMI y NOM-006-STPS-2023. El mismo marco técnico que aplican los líderes globales de la industria.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">📲</div>
-        <h3>Dictámenes con QR de vigencia</h3>
-        <p>Folio único, código QR de vigencia y firma de Ingeniero con cédula profesional en cada dictamen. Escanee el QR y verifique al instante la autenticidad del documento, el nombre del emisor y su fecha de vencimiento — desde cualquier dispositivo, en cualquier momento.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">📄</div>
-        <h3>Documentación técnica formal</h3>
-        <p>Dictámenes emitidos con folio único, código QR de vigencia y firmados por Ingeniero con cédula profesional. Un documento técnico que su organización puede presentar con total confianza ante auditorías, clientes o programas de cumplimiento.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🔍</div>
-        <h3>Inspección con sistema cargado</h3>
-        <p>Inspeccionamos con los racks en operación. Así observamos el comportamiento real del sistema bajo carga — no una fotografía en condición ideal.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">⚙️</div>
-        <h3>Sin interrumpir su operación</h3>
-        <p>Trabajamos alrededor de su operación normal. Sin detener producción, sin mover mercancía, sin paros no programados.</p>
-      </div>
+      <div class="why-card"><div class="why-icon">🏗️</div><h3>Especialización exclusiva en racks</h3><p>Fabricamos, instalamos, inspeccionamos y dictaminamos sistemas de almacenamiento industrial. Es todo lo que hacemos.</p></div>
+      <div class="why-card"><div class="why-icon">📋</div><h3>Estándares internacionales</h3><p>ANSI MH16.1, FEM 10.2.07, RMI y NOM-006-STPS-2023. El mismo marco técnico que aplican los líderes globales de la industria.</p></div>
+      <div class="why-card"><div class="why-icon">📲</div><h3>Dictámenes con QR de vigencia</h3><p>Folio único, código QR de vigencia y firma de Ingeniero con cédula profesional. Escanee el QR y verifique al instante la autenticidad, el emisor y la fecha de vencimiento — desde cualquier dispositivo.</p></div>
+      <div class="why-card"><div class="why-icon">📄</div><h3>Documentación técnica formal</h3><p>Dictámenes con folio único, QR de vigencia y firma de Ingeniero con cédula profesional. Un documento que su organización puede presentar con total confianza ante auditorías y programas de cumplimiento.</p></div>
+      <div class="why-card"><div class="why-icon">🔍</div><h3>Inspección con sistema cargado</h3><p>Inspeccionamos con los racks en operación. Así observamos el comportamiento real del sistema bajo carga — no una fotografía en condición ideal.</p></div>
+      <div class="why-card"><div class="why-icon">⚙️</div><h3>Sin interrumpir su operación</h3><p>Trabajamos alrededor de su operación normal. Sin detener producción, sin mover mercancía, sin paros no programados.</p></div>
     </div>
   </div>
 </section>
@@ -414,26 +390,11 @@
     <h2 class="section-h2">Evaluamos con las normas correctas</h2>
     <p class="section-sub">Cada dictamen se emite conforme a las normativas específicas para sistemas de almacenamiento industrial en México y a nivel internacional.</p>
     <div class="norm-grid">
-      <div class="norm-pill">
-        <div class="norm-dot"></div>
-        <div><span>NOM-006-STPS-2023</span><small>Almacenamiento y manejo de materiales — México</small></div>
-      </div>
-      <div class="norm-pill">
-        <div class="norm-dot"></div>
-        <div><span>ANSI MH16.1 (2012)</span><small>Industrial Steel Storage Racks — EUA</small></div>
-      </div>
-      <div class="norm-pill">
-        <div class="norm-dot"></div>
-        <div><span>FEM 10.2.07</span><small>European Racking Federation — Europa</small></div>
-      </div>
-      <div class="norm-pill">
-        <div class="norm-dot"></div>
-        <div><span>RMI</span><small>Rack Manufacturers Institute — Especificaciones técnicas de fabricación e instalación</small></div>
-      </div>
-      <div class="norm-pill">
-        <div class="norm-dot"></div>
-        <div><span>NOM-017-STPS-2024</span><small>Equipo de protección personal — México</small></div>
-      </div>
+      <div class="norm-pill"><div class="norm-dot"></div><div><span>NOM-006-STPS-2023</span><small>Almacenamiento y manejo de materiales — México</small></div></div>
+      <div class="norm-pill"><div class="norm-dot"></div><div><span>ANSI MH16.1 (2012)</span><small>Industrial Steel Storage Racks — EUA</small></div></div>
+      <div class="norm-pill"><div class="norm-dot"></div><div><span>FEM 10.2.07</span><small>European Racking Federation — Europa</small></div></div>
+      <div class="norm-pill"><div class="norm-dot"></div><div><span>RMI</span><small>Rack Manufacturers Institute — Especificaciones técnicas de fabricación e instalación</small></div></div>
+      <div class="norm-pill"><div class="norm-dot"></div><div><span>NOM-017-STPS-2024</span><small>Equipo de protección personal — México</small></div></div>
     </div>
   </div>
 </section>
@@ -461,26 +422,10 @@
     <h2 class="section-h2">Cumplimiento desde el primer día</h2>
     <p class="section-sub">Todo en regla para operar en cualquier planta o parque industrial de México.</p>
     <div class="cred-grid">
-      <div class="cred-card">
-        <div class="c-icon">📜</div>
-        <h4>Constancia REPSE</h4>
-        <p>Registro de prestadores de servicios especializados vigente ante la STPS</p>
-      </div>
-      <div class="cred-card">
-        <div class="c-icon">🎓</div>
-        <h4>Certificación DC3</h4>
-        <p>Personal certificado para trabajos en altura y espacios confinados</p>
-      </div>
-      <div class="cred-card">
-        <div class="c-icon">📲</div>
-        <h4>Folio + QR de vigencia</h4>
-        <p>Cada dictamen lleva folio único y código QR verificable desde cualquier dispositivo</p>
-      </div>
-      <div class="cred-card">
-        <div class="c-icon">🔒</div>
-        <h4>Confidencialidad total</h4>
-        <p>Toda la información técnica es de uso exclusivo del cliente. Compromiso vigente incluso tras la entrega.</p>
-      </div>
+      <div class="cred-card"><div class="c-icon">📜</div><h4>Constancia REPSE</h4><p>Registro de prestadores de servicios especializados vigente ante la STPS</p></div>
+      <div class="cred-card"><div class="c-icon">🎓</div><h4>Certificación DC3</h4><p>Personal certificado para trabajos en altura y espacios confinados</p></div>
+      <div class="cred-card"><div class="c-icon">📲</div><h4>Folio + QR de vigencia</h4><p>Cada dictamen lleva folio único y código QR verificable desde cualquier dispositivo</p></div>
+      <div class="cred-card"><div class="c-icon">🔒</div><h4>Confidencialidad total</h4><p>Toda la información técnica es de uso exclusivo del cliente. Compromiso vigente incluso tras la entrega.</p></div>
     </div>
   </div>
 </section>
@@ -502,16 +447,16 @@
 </footer>
 
 <script>
-function showTab(id, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
-}
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
 </script>
 </body>
 </html>
