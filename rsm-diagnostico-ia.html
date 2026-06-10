@@ -678,13 +678,14 @@
 <script>
 const choices = {};
 
-const choices = {};
-
 function selectChoice(group, value, el) {
-  // Find all sibling choice-cards in the same parent
-  const parent = el.parentElement;
-  parent.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
+  // Find the actual .choice-card element (el may be a child element)
+  const card = el.classList.contains('choice-card') ? el : el.closest('.choice-card');
+  if (!card) return;
+  // Deselect all siblings in the same grid
+  const grid = card.parentElement;
+  grid.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
   choices[group] = value;
 }
 
