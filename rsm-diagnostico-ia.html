@@ -681,8 +681,8 @@ const choices = {};
 const choices = {};
 
 function selectChoice(group, value, el) {
-  // Only deselect siblings within the same parent container
-  const parent = el.closest('.choice-grid') || el.parentElement;
+  // Find all sibling choice-cards in the same parent
+  const parent = el.parentElement;
   parent.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   choices[group] = value;
@@ -690,8 +690,6 @@ function selectChoice(group, value, el) {
 
 function toggleCheck(el) {
   el.classList.toggle('checked');
-  // Prevent any event from bubbling up
-  event.stopPropagation();
 }
 
 function updateSlider(el) {
