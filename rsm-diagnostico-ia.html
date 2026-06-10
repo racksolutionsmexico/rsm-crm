@@ -681,13 +681,17 @@ const choices = {};
 const choices = {};
 
 function selectChoice(group, value, el) {
-  document.querySelectorAll(`[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+  // Only deselect siblings within the same parent container
+  const parent = el.closest('.choice-grid') || el.parentElement;
+  parent.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   choices[group] = value;
 }
 
 function toggleCheck(el) {
   el.classList.toggle('checked');
+  // Prevent any event from bubbling up
+  event.stopPropagation();
 }
 
 function updateSlider(el) {
