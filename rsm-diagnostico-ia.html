@@ -678,6 +678,8 @@
 <script>
 const choices = {};
 
+const choices = {};
+
 function selectChoice(group, value, el) {
   document.querySelectorAll(`[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
