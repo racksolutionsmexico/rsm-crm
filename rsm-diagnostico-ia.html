@@ -897,103 +897,30 @@ function showResult(result, inputs) {
   // Build personalized messages
   const nivelNombre = n.name;
   const urgenciaLabel = ['','Sin prisa','Poco urgente','Moderado','Bastante urgente','Urgente hoy'][inputs.urgencia] || 'Moderado';
-  const objetivoLabels = {
-    diagnostico:'Conocer estado actual',
-    operabilidad:'Validar operabilidad y capacidades',
-    normativo:'Cumplimiento NOM-006-STPS-2023',
-    auditoria:'Auditoría interna / Autoridades'
-  };
-  const inspeccionLabels = {
-    nunca:'Nunca inspeccionados',
-    mas2anos:'Hace más de 2 años',
-    menos2anos:'Hace menos de 2 años',
-    norecuerdo:'No se sabe con certeza'
-  };
-  const condTextos2 = {
-    impactos:'Impactos de montacargas',
-    deformaciones:'Deformaciones en postes',
-    corrosion:'Corrosión en bases',
-    sobrecargas:'Sobrecargas / pallets mal colocados',
-    sinplaca:'Sin placa de capacidad',
-    ninguno:'Aparentemente en buen estado'
-  };
-  const condStr = inputs.condicion.length ? inputs.condicion.map(c => condTextos2[c]).join(', ') : 'Sin anomalías reportadas';
+  const objetivoLabels = {diagnostico:'Conocer estado actual',operabilidad:'Validar operabilidad y capacidades',normativo:'Cumplimiento NOM-006-STPS-2023',auditoria:'Auditoria interna / Autoridades'};
+  const inspeccionLabels = {nunca:'Nunca inspeccionados',mas2anos:'Hace mas de 2 anos',menos2anos:'Hace menos de 2 anos',norecuerdo:'No se sabe con certeza'};
+  const condTextos2 = {impactos:'Impactos de montacargas',deformaciones:'Deformaciones en postes',corrosion:'Corrosion en bases',sobrecargas:'Sobrecargas / pallets mal colocados',sinplaca:'Sin placa de capacidad',ninguno:'Aparentemente en buen estado'};
+  const condStr = inputs.condicion.length ? inputs.condicion.map(c => condTextos2[c] || c).join(', ') : 'Sin anomalias reportadas';
   const dimParts2 = [];
-  if(inputs.numModulos && inputs.numModulos !== 'No especificado') dimParts2.push(inputs.numModulos + ' módulos');
-  if(inputs.numBaterias && inputs.numBaterias !== 'No especificado') dimParts2.push(inputs.numBaterias + ' baterías');
+  if(inputs.numModulos && inputs.numModulos !== 'No especificado') dimParts2.push(inputs.numModulos + ' modulos');
+  if(inputs.numBaterias && inputs.numBaterias !== 'No especificado') dimParts2.push(inputs.numBaterias + ' baterias');
   if(inputs.numPosiciones && inputs.numPosiciones !== 'No especificado') dimParts2.push(inputs.numPosiciones + ' posiciones');
   const dimResumen = dimParts2.length ? dimParts2.join(' / ') : 'No especificado';
 
-  // Message cliente (short and clean)
-  const msgCliente = encodeURIComponent(
-    'Hola Alejandro, acabo de hacer el diagnóstico de mis racks en su sitio web. ' +
-    'El resultado fue: ' + nivelNombre + '. ' +
-    'Me interesa recibir una cotización.'
-  );
+  const objLabel = objetivoLabels[inputs.objetivo] || inputs.objetivo || '';
+  const inspLabel = inspeccionLabels[inputs.inspeccion] || inputs.inspeccion || '';
+  const ctxExtra = inputs.contexto ? ' Contexto: ' + inputs.contexto : '';
 
-  // Message Alejandro (full summary — hidden from client, sent as WA message)
-  const msgAlejandro = encodeURIComponent(
-    '--- DIAGNÓSTICO RSM ---
-' +
-    'Resultado: NIVEL ' + result.nivel + ' — ' + nivelNombre + '
-' +
-    'Giro: ' + inputs.giro + '
-' +
-    'Dimensión: ' + dimResumen + '
-' +
-    'Condición visible: ' + condStr + '
-' +
-    'Historial inspección: ' + (inspeccionLabels[inputs.inspeccion] || inputs.inspeccion) + '
-' +
-    'Objetivo: ' + (objetivoLabels[inputs.objetivo] || inputs.objetivo) + '
-' +
-    'Urgencia: ' + urgenciaLabel + '
-' +
-    (inputs.contexto ? 'Contexto adicional: ' + inputs.contexto + '
-' : '') +
-    '--- Solicitud de cotización ---'
-  );
+  const waText = 'DIAGNOSTICO RSM - Nivel ' + result.nivel + ' - ' + nivelNombre + ' | Giro: ' + inputs.giro + ' | Dimension: ' + dimResumen + ' | Condicion: ' + condStr + ' | Inspeccion: ' + inspLabel + ' | Objetivo: ' + objLabel + ' | Urgencia: ' + urgenciaLabel + ctxExtra + ' | Solicita cotizacion.';
 
-  // Subject for email
-  const emailSubject = encodeURIComponent('Diagnóstico IA — ' + nivelNombre + ' — ' + inputs.giro);
-  const emailBody = encodeURIComponent(
-    'Hola Alejandro,
+  const emailSub = 'Diagnostico IA - ' + nivelNombre + ' - ' + inputs.giro;
+  const emailTxt = 'Hola Alejandro, acabo de hacer el diagnostico de mis racks. RESULTADO: Nivel ' + result.nivel + ' - ' + nivelNombre + '. Giro: ' + inputs.giro + '. Dimension: ' + dimResumen + '. Condicion: ' + condStr + '. Inspeccion: ' + inspLabel + '. Objetivo: ' + objLabel + '. Urgencia: ' + urgenciaLabel + '.' + ctxExtra + ' Me interesa una cotizacion.';
 
-' +
-    'Acabo de hacer el diagnóstico de mis racks en su sitio web.
-
-' +
-    'RESULTADO: NIVEL ' + result.nivel + ' — ' + nivelNombre + '
-
-' +
-    '--- Datos del diagnóstico ---
-' +
-    'Giro / industria: ' + inputs.giro + '
-' +
-    'Dimensión del sistema: ' + dimResumen + '
-' +
-    'Condición visible: ' + condStr + '
-' +
-    'Historial de inspección: ' + (inspeccionLabels[inputs.inspeccion] || inputs.inspeccion) + '
-' +
-    'Objetivo principal: ' + (objetivoLabels[inputs.objetivo] || inputs.objetivo) + '
-' +
-    'Urgencia: ' + urgenciaLabel + '
-' +
-    (inputs.contexto ? 'Contexto adicional: ' + inputs.contexto + '
-' : '') +
-    '
-Me interesa recibir una cotización.
-
-Saludos.'
-  );
-
-  // Update WA and email buttons with personalized messages
   const waBtn = document.querySelector('.btn-wa');
-  if(waBtn) waBtn.href = 'https://wa.me/5215545992081?text=' + msgAlejandro;
+  if(waBtn) waBtn.href = 'https://wa.me/5215545992081?text=' + encodeURIComponent(waText);
 
   const mailBtn = document.querySelector('.btn-mail');
-  if(mailBtn) mailBtn.href = 'mailto:abadia@racksm.com.mx?subject=' + emailSubject + '&body=' + emailBody;
+  if(mailBtn) mailBtn.href = 'mailto:abadia@racksm.com.mx?subject=' + encodeURIComponent(emailSub) + '&body=' + encodeURIComponent(emailTxt);
 
   document.getElementById('result-box').classList.add('active');
   document.querySelector('.result-box').scrollIntoView({ behavior: 'smooth' });
