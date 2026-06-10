@@ -800,7 +800,7 @@ Genera una respuesta JSON con exactamente esta estructura (sin markdown, sin bac
     const clean = raw.replace(/```json|```/g, '').trim();
     const result = JSON.parse(clean);
 
-    showResult(result, { giro, numModulos, numBaterias, numPosiciones, condicion });
+    showResult(result, { giro, numModulos, numBaterias, numPosiciones, condicion, objetivo, urgencia, inspeccion, contexto });
 
   } catch(e) {
     clearInterval(stepInterval);
@@ -823,7 +823,7 @@ const NIVELES = {
     'Vigencia 6 meses · Soporte post-entrega 15 días'
   ]},
   2: { name: 'Dictamen Técnico Intermedio', color: '#1A5C45', gradEnd: '#2B9E7A', entregables: [
-    'Todo lo del Nivel 1',
+    'Todo lo del Nivel 1, más',
     'Evaluación técnica especializada de componentes',
     'Determinación de capacidades de carga seguras',
     'Dictamen técnico de operabilidad',
@@ -833,7 +833,7 @@ const NIVELES = {
     'Vigencia 12 meses · Soporte post-entrega 30 días'
   ]},
   3: { name: 'Dictamen Técnico Integral', color: '#8B2E0A', gradEnd: '#E85A1B', entregables: [
-    'Todo lo del Nivel 2',
+    'Todo lo del Nivel 1 y Nivel 2, más',
     'Inventario estructural por batería',
     'Fichas técnicas de componentes',
     'Módulo muestra y levantamiento dimensional',
@@ -890,6 +890,107 @@ function showResult(result, inputs) {
   nsWrap.innerHTML = [result.siguiente_paso_1, result.siguiente_paso_2, result.siguiente_paso_3].map((s, i) =>
     `<div class="next-step"><div class="ns-num">${i+1}</div><div class="ns-content"><h4>${s.titulo}</h4><p>${s.desc}</p></div></div>`
   ).join('');
+
+  // Build personalized messages
+  const nivelNombre = n.name;
+  const urgenciaLabel = ['','Sin prisa','Poco urgente','Moderado','Bastante urgente','Urgente hoy'][inputs.urgencia] || 'Moderado';
+  const objetivoLabels = {
+    diagnostico:'Conocer estado actual',
+    operabilidad:'Validar operabilidad y capacidades',
+    normativo:'Cumplimiento NOM-006-STPS-2023',
+    auditoria:'Auditoría interna / Autoridades'
+  };
+  const inspeccionLabels = {
+    nunca:'Nunca inspeccionados',
+    mas2anos:'Hace más de 2 años',
+    menos2anos:'Hace menos de 2 años',
+    norecuerdo:'No se sabe con certeza'
+  };
+  const condTextos2 = {
+    impactos:'Impactos de montacargas',
+    deformaciones:'Deformaciones en postes',
+    corrosion:'Corrosión en bases',
+    sobrecargas:'Sobrecargas / pallets mal colocados',
+    sinplaca:'Sin placa de capacidad',
+    ninguno:'Aparentemente en buen estado'
+  };
+  const condStr = inputs.condicion.length ? inputs.condicion.map(c => condTextos2[c]).join(', ') : 'Sin anomalías reportadas';
+  const dimParts2 = [];
+  if(inputs.numModulos && inputs.numModulos !== 'No especificado') dimParts2.push(inputs.numModulos + ' módulos');
+  if(inputs.numBaterias && inputs.numBaterias !== 'No especificado') dimParts2.push(inputs.numBaterias + ' baterías');
+  if(inputs.numPosiciones && inputs.numPosiciones !== 'No especificado') dimParts2.push(inputs.numPosiciones + ' posiciones');
+  const dimResumen = dimParts2.length ? dimParts2.join(' / ') : 'No especificado';
+
+  // Message cliente (short and clean)
+  const msgCliente = encodeURIComponent(
+    'Hola Alejandro, acabo de hacer el diagnóstico de mis racks en su sitio web. ' +
+    'El resultado fue: ' + nivelNombre + '. ' +
+    'Me interesa recibir una cotización.'
+  );
+
+  // Message Alejandro (full summary — hidden from client, sent as WA message)
+  const msgAlejandro = encodeURIComponent(
+    '--- DIAGNÓSTICO RSM ---
+' +
+    'Resultado: NIVEL ' + result.nivel + ' — ' + nivelNombre + '
+' +
+    'Giro: ' + inputs.giro + '
+' +
+    'Dimensión: ' + dimResumen + '
+' +
+    'Condición visible: ' + condStr + '
+' +
+    'Historial inspección: ' + (inspeccionLabels[inputs.inspeccion] || inputs.inspeccion) + '
+' +
+    'Objetivo: ' + (objetivoLabels[inputs.objetivo] || inputs.objetivo) + '
+' +
+    'Urgencia: ' + urgenciaLabel + '
+' +
+    (inputs.contexto ? 'Contexto adicional: ' + inputs.contexto + '
+' : '') +
+    '--- Solicitud de cotización ---'
+  );
+
+  // Subject for email
+  const emailSubject = encodeURIComponent('Diagnóstico IA — ' + nivelNombre + ' — ' + inputs.giro);
+  const emailBody = encodeURIComponent(
+    'Hola Alejandro,
+
+' +
+    'Acabo de hacer el diagnóstico de mis racks en su sitio web.
+
+' +
+    'RESULTADO: NIVEL ' + result.nivel + ' — ' + nivelNombre + '
+
+' +
+    '--- Datos del diagnóstico ---
+' +
+    'Giro / industria: ' + inputs.giro + '
+' +
+    'Dimensión del sistema: ' + dimResumen + '
+' +
+    'Condición visible: ' + condStr + '
+' +
+    'Historial de inspección: ' + (inspeccionLabels[inputs.inspeccion] || inputs.inspeccion) + '
+' +
+    'Objetivo principal: ' + (objetivoLabels[inputs.objetivo] || inputs.objetivo) + '
+' +
+    'Urgencia: ' + urgenciaLabel + '
+' +
+    (inputs.contexto ? 'Contexto adicional: ' + inputs.contexto + '
+' : '') +
+    '
+Me interesa recibir una cotización.
+
+Saludos.'
+  );
+
+  // Update WA and email buttons with personalized messages
+  const waBtn = document.querySelector('.btn-wa');
+  if(waBtn) waBtn.href = 'https://wa.me/5215545992081?text=' + msgAlejandro;
+
+  const mailBtn = document.querySelector('.btn-mail');
+  if(mailBtn) mailBtn.href = 'mailto:abadia@racksm.com.mx?subject=' + emailSubject + '&body=' + emailBody;
 
   document.getElementById('result-box').classList.add('active');
   document.querySelector('.result-box').scrollIntoView({ behavior: 'smooth' });
