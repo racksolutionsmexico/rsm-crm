@@ -1339,17 +1339,26 @@ function acSL(inp,lid,arr){
 }
 function selAC(lid,id,val){
   var list=document.getElementById(lid);
-  var inp=list.previousElementSibling;
-  if(inp&&inp.tagName==='INPUT') inp.value=val.toUpperCase();
-  // Mapa correcto de lista → campo ID oculto
-  var hidMap={
-    'prosp-ea':'prosp-eid','prosp-ca':'prosp-cid',
-    'prs-ea':'prs-eid','prs-ca':'prs-cid',
-    'p-ea':'p-eid','s-ea':'s-eid'
+  // Mapa: lista → [campo texto visible, campo ID oculto]
+  var fieldMap={
+    'prosp-ea':['prosp-ei','prosp-eid'],
+    'prosp-ca':['prosp-ci','prosp-cid'],
+    'prs-ea':['prs-ei','prs-eid'],
+    'prs-ca':['prs-ci','prs-cid'],
+    'p-ea':['p-ei','p-eid'],
+    's-ea':['s-ei','s-eid']
   };
-  var hidId=hidMap[lid]||(lid.replace('-ea','-eid').replace('-ca','-cid').replace('-ac','-id'));
-  var hid=document.getElementById(hidId);
-  if(hid) hid.value=id;
+  var fields=fieldMap[lid];
+  if(fields){
+    var txtEl=document.getElementById(fields[0]);
+    var hidEl=document.getElementById(fields[1]);
+    if(txtEl) txtEl.value=val.toUpperCase();
+    if(hidEl) hidEl.value=id;
+  } else {
+    // Fallback: elemento anterior al div de la lista
+    var inp=list.previousElementSibling;
+    if(inp&&inp.tagName==='INPUT') inp.value=val.toUpperCase();
+  }
   list.classList.remove('open');
 }
 function selACL(lid,val){
