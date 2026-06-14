@@ -591,11 +591,11 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
     <div class="ibox"><i class="ti ti-info-circle"></i> Prospecto: cliente potencial sin cotización aún. El valor y folio se asignan al convertir en proyecto.</div>
     <div class="fgrid">
       <div class="fg full"><label>Empresa *</label>
-        <input id="prosp-ei" placeholder="BUSCAR O ESCRIBIR EMPRESA..." oninput="acS(this,'prosp-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('prosp-ea');},200)" autocomplete="off">
+        <input id="prosp-ei" placeholder="BUSCAR O ESCRIBIR EMPRESA..." oninput="acS(this,'prosp-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('prosp-ea');},400)" autocomplete="off">
         <input type="hidden" id="prosp-eid"><div class="acl" id="prosp-ea"></div>
       </div>
       <div class="fg full"><label>Contacto</label>
-        <input id="prosp-ci" placeholder="BUSCAR O ESCRIBIR CONTACTO..." oninput="acS(this,'prosp-ca',DB.contactos,'nombre')" onblur="setTimeout(function(){closeAC('prosp-ca');},200)" autocomplete="off">
+        <input id="prosp-ci" placeholder="BUSCAR O ESCRIBIR CONTACTO..." oninput="acS(this,'prosp-ca',DB.contactos,'nombre')" onblur="setTimeout(function(){closeAC('prosp-ca');},400)" autocomplete="off">
         <input type="hidden" id="prosp-cid"><div class="acl" id="prosp-ca"></div>
       </div>
       <div class="fg"><label>Tipo de dictamen estimado</label>
@@ -633,11 +633,11 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
     <div class="ibox" style="border-color:var(--teal)"><i class="ti ti-info-circle"></i> Prospecto de servicio. El valor y folio se asignan al convertir en proyecto.</div>
     <div class="fgrid">
       <div class="fg full"><label>Empresa *</label>
-        <input id="prs-ei" placeholder="BUSCAR O ESCRIBIR EMPRESA..." oninput="acS(this,'prs-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('prs-ea');},200)" autocomplete="off">
+        <input id="prs-ei" placeholder="BUSCAR O ESCRIBIR EMPRESA..." oninput="acS(this,'prs-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('prs-ea');},400)" autocomplete="off">
         <input type="hidden" id="prs-eid"><div class="acl" id="prs-ea"></div>
       </div>
       <div class="fg full"><label>Contacto</label>
-        <input id="prs-ci" placeholder="BUSCAR O ESCRIBIR CONTACTO..." oninput="acS(this,'prs-ca',DB.contactos,'nombre')" onblur="setTimeout(function(){closeAC('prs-ca');},200)" autocomplete="off">
+        <input id="prs-ci" placeholder="BUSCAR O ESCRIBIR CONTACTO..." oninput="acS(this,'prs-ca',DB.contactos,'nombre')" onblur="setTimeout(function(){closeAC('prs-ca');},400)" autocomplete="off">
         <input type="hidden" id="prs-cid"><div class="acl" id="prs-ca"></div>
       </div>
       <div class="fg"><label>Tipo de servicio</label>
@@ -691,7 +691,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
     <div class="tp active" id="tpg">
       <div class="fgrid">
         <div class="fg"><label>Empresa *</label>
-          <input id="p-ei" placeholder="BUSCAR EMPRESA..." oninput="acS(this,'p-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('p-ea');updConts();},200)" autocomplete="off">
+          <input id="p-ei" placeholder="BUSCAR EMPRESA..." oninput="acS(this,'p-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('p-ea');updConts(null);},400)" autocomplete="off">
           <input type="hidden" id="p-eid"><div class="acl" id="p-ea"></div>
         </div>
         <div class="fg"><label>Contacto principal</label><select id="p-cont"><option value="">Seleccionar...</option></select></div>
@@ -859,7 +859,7 @@ tr.rc:hover td{background:#FAFBFC;cursor:pointer}
     <div class="tp active" id="stpg">
       <div class="fgrid">
         <div class="fg"><label>Empresa *</label>
-          <input id="s-ei" placeholder="BUSCAR EMPRESA..." oninput="acS(this,'s-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('s-ea');updContsSV();},200)" autocomplete="off">
+          <input id="s-ei" placeholder="BUSCAR EMPRESA..." oninput="acS(this,'s-ea',DB.empresas,'razon')" onblur="setTimeout(function(){closeAC('s-ea');updContsSV();},400)" autocomplete="off">
           <input type="hidden" id="s-eid"><div class="acl" id="s-ea"></div>
         </div>
         <div class="fg"><label>Contacto principal</label><select id="s-cont"><option value="">Seleccionar...</option></select></div>
@@ -1319,9 +1319,10 @@ function acS(inp,lid,arr,field){
   if(!q||q.length<1){list.classList.remove('open');return;}
   var m=arr.filter(function(i){return(i[field]||'').toUpperCase().includes(q);}).slice(0,8);
   if(!m.length){list.classList.remove('open');return;}
-  list.innerHTML=m.map(function(i,idx){
+  // Usar data-attributes para evitar problemas con caracteres especiales
+  list.innerHTML=m.map(function(i){
     var hl=(i[field]||'').toUpperCase().replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
-    return'<div class="aci" onmousedown="selAC(\''+lid+'\',\''+i.id+'\',\''+i[field].replace(/'/g,"\\'")+'\'">'+hl+'</div>';
+    return'<div class="aci" data-lid="'+lid+'" data-id="'+i.id+'" data-val="'+encodeURIComponent(i[field])+'" onmousedown="selACData(this)">'+hl+'</div>';
   }).join('');
   list.classList.add('open');
 }
@@ -1337,6 +1338,13 @@ function acSL(inp,lid,arr){
   }).join('');
   list.classList.add('open');
 }
+function selACData(el){
+  var lid=el.dataset.lid;
+  var id=el.dataset.id;
+  var val=decodeURIComponent(el.dataset.val);
+  selAC(lid,id,val);
+}
+
 function selAC(lid,id,val){
   var list=document.getElementById(lid);
   // Mapa: lista → [campo texto visible, campo ID oculto]
